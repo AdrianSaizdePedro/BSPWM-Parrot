@@ -121,6 +121,7 @@ sudo wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/
 chsh -s /usr/bin/zsh
 sudo usermod --shell /usr/bin/zsh root
 sudo ln -s -fv ~/.zshrc /root/.zshrc
+sudo chown root:root /usr/local/share/zsh/site-functions/_bspc
 
 # Asignamos Permisos a los Scritps
 

@@ -1,6 +1,20 @@
 Hyperlinked grep
 =================
 
+.. only:: man
+
+    Overview
+    --------------
+
+
+.. note::
+
+   As of ripgrep versions newer that 13.0 it supports hyperlinks
+   natively so you can just add the following alias in your shell rc file:
+   ``alias rg="rg --hyperlink-format=kitty"`` no need to use this kitten.
+   But, see below for instructions on how to customize kitty to have it open
+   the hyperlinks from ripgrep in your favorite editor.
+
 This kitten allows you to search your files using `ripgrep
 <https://github.com/BurntSushi/ripgrep>`__ and open the results directly in your
 favorite editor in the terminal, at the line containing the search result,
@@ -14,29 +28,30 @@ following contents:
 .. code:: conf
 
     # Open any file with a fragment in vim, fragments are generated
-    # by the hyperlink_grep kitten and nothing else so far.
+    # by the hyperlink-grep kitten and nothing else so far.
     protocol file
     fragment_matches [0-9]+
-    action launch --type=overlay --cwd=current vim +${FRAGMENT} ${FILE_PATH}
+    action launch --type=overlay --cwd=current vim +${FRAGMENT} -- ${FILE_PATH}
 
     # Open text files without fragments in the editor
     protocol file
     mime text/*
-    action launch --type=overlay --cwd=current ${EDITOR} ${FILE_PATH}
+    action launch --type=overlay --cwd=current -- ${EDITOR} -- ${FILE_PATH}
 
 Now, run a search with::
 
-    kitty +kitten hyperlinked_grep something
+    kitten hyperlinked-grep something
 
 Hold down the :kbd:`Ctrl+Shift` keys and click on any of the result lines, to
 open the file in :program:`vim` at the matching line. If you use some editor
 other than :program:`vim`, you should adjust the :file:`open-actions.conf` file
-accordingly.
+accordingly. TO open links with the keyboard instead, use
+:sc:`open_selected_hyperlink`.
 
 Finally, add an alias to your shell's rc files to invoke the kitten as
 :command:`hg`::
 
-    alias hg="kitty +kitten hyperlinked_grep"
+    alias hg="kitten hyperlinked-grep"
 
 
 You can now run searches with::
@@ -62,7 +77,7 @@ the need for this kitten.
 
 
 .. note::
-   While you can pass any of ripgrep's comand line options to the kitten and
+   While you can pass any of ripgrep's command line options to the kitten and
    they will be forwarded to :program:`rg`, do not use options that change the
    output formatting as the kitten works by parsing the output from ripgrep.
    The unsupported options are: :code:`--context-separator`,

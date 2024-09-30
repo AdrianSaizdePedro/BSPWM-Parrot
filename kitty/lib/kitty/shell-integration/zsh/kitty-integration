@@ -9,7 +9,7 @@
 # kitty-integration won't automatically run. Zsh users who want integration with
 # kitty in all shells should add the following lines to their .zshrc:
 #
-#   if [[ -n $KITTY_INSTALLATION_DIR ]]; then
+#   if [[ -n "$KITTY_INSTALLATION_DIR" ]]; then
 #     export KITTY_SHELL_INTEGRATION="enabled"
 #     autoload -Uz -- "$KITTY_INSTALLATION_DIR"/shell-integration/zsh/kitty-integration
 #     kitty-integration
@@ -23,9 +23,9 @@
 
 builtin emulate -L zsh -o no_warn_create_global -o no_aliases
 
-[[ -o interactive ]]              || builtin return 0  # non-interactive shell
-[[ -n $KITTY_SHELL_INTEGRATION ]] || builtin return 0  # integration disabled
-(( ! $+_ksi_state ))              || builtin return 0  # already initialized
+[[ -o interactive ]]                || builtin return 0  # non-interactive shell
+[[ -n "$KITTY_SHELL_INTEGRATION" ]] || builtin return 0  # integration disabled
+(( ! $+_ksi_state ))                || builtin return 0  # already initialized
 
 # 0: no OSC 133 [AC] marks have been written yet.
 # 1: the last written OSC 133 C has not been closed with D yet.
@@ -84,7 +84,7 @@ precmd_functions+=(_ksi_deferred_init)
 _ksi_deferred_init() {
     builtin emulate -L zsh -o no_warn_create_global -o no_aliases
 
-    # Recognized options: no-cursor, no-title, no-prompt-mark, no-complete, no-cwd.
+    # Recognized options: no-cursor, no-title, no-prompt-mark, no-complete, no-cwd, no-sudo.
     builtin local -a opt
     opt=(${(s: :)KITTY_SHELL_INTEGRATION})
     builtin unset KITTY_SHELL_INTEGRATION
@@ -215,7 +215,7 @@ _ksi_deferred_init() {
             # its preexec hook before us, we'll incorrectly mark its output as
             # belonging to the command (as if the user typed it into zle) rather
             # than command output.
-            builtin print -nu $_ksi_fd '\e]133;C\a'
+            builtin print -nu "$_ksi_fd" -f '\e]133;C;cmdline=%q\a' "$1"
             (( _ksi_state = 1 ))
         }
 
@@ -388,10 +388,31 @@ _ksi_deferred_init() {
 
     builtin alias edit-in-kitty="kitten edit-in-kitty"
 
+    if (( ! opt[(Ie)no-sudo] )) ; then
+        if [[ -n "$TERMINFO" && ! ( -r "/usr/share/terminfo/x/xterm-kitty" || -r "/usr/share/terminfo/78/xterm-kitty" ) ]]; then
+            sudo() {
+                # Ensure terminfo is available in sudo
+                builtin local is_sudoedit="n"
+                for arg; do
+                    if [[ "$arg" == "-e" || $arg == "--edit" ]]; then
+                        is_sudoedit="y"
+                        builtin break;
+                    fi
+                    [[ "$arg" != -* && "$arg" != *=* ]] && builtin break  # command found
+                done
+                if [[ "$is_sudoedit" == "y" ]]; then
+                    builtin command sudo "$@";
+                else
+                    builtin command sudo TERMINFO="$TERMINFO" "$@";
+                fi
+            }
+        fi
+    fi
+
     # Map alt+left/right to move by word if not already mapped. This is expected behavior on macOS and I am tired
     # of answering questions about it.
-    [[ $(builtin bindkey "^[[1;3C") == *" undefined-key" ]] && builtin bindkey "^[[1;3C" "forward-word" 
-    [[ $(builtin bindkey "^[[1;3D") == *" undefined-key" ]] && builtin bindkey "^[[1;3D" "backward-word" 
+    [[ $(builtin bindkey "^[[1;3C") == *" undefined-key" ]] && builtin bindkey "^[[1;3C" "forward-word"
+    [[ $(builtin bindkey "^[[1;3D") == *" undefined-key" ]] && builtin bindkey "^[[1;3D" "backward-word"
 
     # Unfunction _ksi_deferred_init to save memory. Don't unfunction
     # kitty-integration though because decent public functions aren't supposed to

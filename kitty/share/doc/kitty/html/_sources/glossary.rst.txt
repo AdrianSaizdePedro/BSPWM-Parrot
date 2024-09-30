@@ -6,7 +6,7 @@ Glossary
 .. glossary::
 
    os_window
-     kitty has two kinds of windows. Operating System windows, refered to as :term:`OS
+     kitty has two kinds of windows. Operating System windows, referred to as :term:`OS
      Window <os_window>`, and *kitty windows*. An OS Window consists of one or more kitty
      :term:`tabs <tab>`. Each tab in turn consists of one or more *kitty
      windows* organized in a :term:`layout`.
@@ -22,7 +22,7 @@ Glossary
      the terminal. See :doc:`layouts` for details.
 
    window
-     kitty has two kinds of windows. Operating System windows, refered to as :term:`OS
+     kitty has two kinds of windows. Operating System windows, referred to as :term:`OS
      Window <os_window>`, and *kitty windows*. An OS Window consists of one or more kitty
      :term:`tabs <tab>`. Each tab in turn consists of one or more *kitty
      windows* organized in a :term:`layout`.
@@ -93,7 +93,7 @@ Variables that influence kitty behavior
 .. envvar:: KITTY_WAYLAND_DETECT_MODIFIERS
 
    When set to a non-empty value, kitty attempts to autodiscover XKB modifiers
-   under Wayland. This is useful if using non-standard modifers like hyper. It
+   under Wayland. This is useful if using non-standard modifiers like hyper. It
    is possible for the autodiscovery to fail; the default Wayland XKB mappings
    are used in this case. See :pull:`3943` for details.
 
@@ -120,7 +120,7 @@ Variables that influence kitty behavior
 
 .. envvar:: KITTY_RC_PASSWORD
 
-   Set this to a pass phrase to use the ``kitty @`` remote control command with
+   Set this to a pass phrase to use the ``kitten @`` remote control command with
    :opt:`remote_control_password`.
 
 
@@ -164,7 +164,8 @@ Variables that kitty sets when running child programs
 
 .. envvar:: TERMINFO
 
-   Path to a directory containing the kitty terminfo database.
+   Path to a directory containing the kitty terminfo database. Or the terminfo
+   database itself encoded in base64. See :opt:`terminfo_type`.
 
 .. envvar:: KITTY_INSTALLATION_DIR
 
@@ -179,8 +180,10 @@ Variables that kitty sets when running child programs
 
    Set when the :doc:`remote control <remote-control>` facility is enabled and
    the a socket is used for control via :option:`kitty --listen-on` or :opt:`listen_on`.
-   Contains the path to the socket. Avoid the need to use :option:`kitty @ --to` when
-   issuing remote control commands.
+   Contains the path to the socket. Avoid the need to use :option:`kitten @ --to` when
+   issuing remote control commands. Can also be a file descriptor of the form
+   fd:num instead of a socket address, in which case, remote control
+   communication should proceed over the specified file descriptor.
 
 .. envvar:: KITTY_PIPE_DATA
 
@@ -223,3 +226,16 @@ Variables that kitty sets when running child programs
 
    Set when using the include directive in kitty.conf. Can take values:
    ``linux``, ``macos``, ``bsd``.
+
+.. envvar:: KITTY_HOLD
+
+   Set to ``1`` when kitty is running a shell because of the ``--hold`` flag. Can
+   be used to specialize shell behavior in the shell rc files as desired.
+
+.. envvar:: KITTY_SIMD
+
+   Set it to ``128`` to use 128 bit vector registers, ``256`` to use 256 bit
+   vector registers or any other value to prevent kitty from using SIMD CPU
+   vector instructions. Warning, this overrides CPU capability detection so
+   will cause kitty to crash with SIGILL if your CPU does not support the
+   necessary SIMD extensions.

@@ -98,6 +98,10 @@ You can :doc:`create your own kittens to scratch your own itches
 
 For a list of all the builtin kittens, :ref:`see here <kittens>`.
 
+Additionally, you can use the :ref:`watchers <Watchers>` framework
+to create Python scripts that run in response to various events such as windows
+being resized, closing, having their titles changed, etc.
+
 .. toctree::
    :hidden:
 
@@ -247,8 +251,11 @@ The scrollback buffer
 -----------------------
 
 |kitty| supports scrolling back to view history, just like most terminals. You
-can use either keyboard shortcuts or the mouse scroll wheel to do so. However,
-|kitty| has an extra, neat feature. Sometimes you need to explore the scrollback
+can use either keyboard shortcuts or the mouse scroll wheel to do so. While
+you are browsing the scrollback a :opt:`small indicator <scrollback_indicator_opacity>`
+is displayed along the right edge of the window to show how far back you are.
+
+However, |kitty| has an extra, neat feature. Sometimes you need to explore the scrollback
 buffer in more detail, maybe search for some text or refer to it side-by-side
 while typing in a follow-up command. |kitty| allows you to do this by pressing
 the :sc:`show_scrollback` shortcut, which will open the scrollback buffer in
@@ -266,7 +273,9 @@ Would open the scrollback buffer in a new :term:`window` when you press the
 :kbd:`F1` key. See :sc:`show_scrollback <show_scrollback>` for details.
 
 If you want to use it with an editor such as :program:`vim` to get more powerful
-features, you can see tips for doing so, in :iss:`this thread <719>`.
+features, see for example, `kitty-scrollback.nvim
+<https://github.com/mikesmithgh/kitty-scrollback.nvim>`__ or `kitty-grab <https://github.com/yurikhan/kitty_grab>`__
+or see more tips for using various editor programs, in :iss:`this thread <719>`.
 
 If you wish to store very large amounts of scrollback to view using the piping
 or :sc:`show_scrollback <show_scrollback>` features, you can use the

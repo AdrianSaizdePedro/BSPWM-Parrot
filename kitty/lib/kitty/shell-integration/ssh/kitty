@@ -24,7 +24,7 @@ exec_kitty() {
 
 
 is_wrapped_kitten() {
-    wrapped_kittens="clipboard icat hyperlinked_grep ask hints unicode_input ssh themes diff"
+    wrapped_kittens="clipboard icat hyperlinked_grep ask hints unicode_input ssh themes diff show_key transfer"
     [ -n "$1" ] && {
         case " $wrapped_kittens " in
             *" $1 "*) printf "%s" "$1" ;;
@@ -78,6 +78,7 @@ if [ "$OS" = "linux" ]; then
         amd64|x86_64) arch="x86_64";;
         aarch64*) arch="arm64";;
         armv8*) arch="arm64";;
+        arm64) arch="arm64";;
         i386) arch="i686";;
         i686) arch="i686";;
         *) die "Unknown CPU architecture $(command uname -m)";;

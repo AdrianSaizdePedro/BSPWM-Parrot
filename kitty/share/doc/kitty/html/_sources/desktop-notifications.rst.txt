@@ -94,9 +94,9 @@ to display it based on what it does understand.
    revisions.
 
 
-=======  ====================  =========  =================
+=======  ====================  ========== =================
 Key      Value                 Default    Description
-=======  ====================  =========  =================
+=======  ====================  ========== =================
 ``a``    Comma separated list  ``focus``  What action to perform when the
          of ``report``,                   notification is clicked
          ``focus``, with
@@ -113,7 +113,23 @@ Key      Value                 Default    Description
 
 ``p``    One of ``title`` or   ``title``  Whether the payload is the notification title or body. If a
          ``body``.                        notification has no title, the body will be used as title.
-=======  ====================  =========  =================
+
+``o``    One of ``always``,    ``always`` When to honor the notification request. ``unfocused`` means when the window
+         ``unfocused`` or                 the notification is sent on does not have keyboard focus. ``invisible``
+         ``invisible``                    means the window both is unfocused
+                                          and not visible to the user, for example, because it is in an inactive tab or
+                                          its OS window is not currently active.
+                                          ``always`` is the default and always honors the request.
+``u``    ``0, 1 or 2``         ``unset``  The *urgency* of the notification. ``0`` is low, ``1`` is normal and ``2`` is critical.
+                                          If not specified normal is used.
+=======  ====================  ========== =================
+
+
+.. versionadded:: 0.35.0
+   Support for the ``u`` key to specify urgency
+
+.. versionadded:: 0.31.0
+   Support for the ``o`` key to prevent notifications from focused windows
 
 
 .. note::

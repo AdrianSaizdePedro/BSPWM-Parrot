@@ -14,7 +14,17 @@ cleanup_on_bootstrap_exit() {
     tdir=""
 }
 
-die() { printf "\033[31m%s\033[m\n\r" "$*" > /dev/stderr; cleanup_on_bootstrap_exit; exit 1; }
+die() {
+    if [ -e /dev/stderr ]; then
+        printf "\033[31m%s\033[m\n\r" "$*" > /dev/stderr;
+    elif [ -e /dev/fd/2 ]; then
+        printf "\033[31m%s\033[m\n\r" "$*" > /dev/fd/2;
+    else
+        printf "\033[31m%s\033[m\n\r" "$*";
+    fi
+    cleanup_on_bootstrap_exit;
+    exit 1;
+}
 
 python_detected="0"
 detect_python() {
@@ -64,7 +74,6 @@ fi
 
 dcs_to_kitty() { printf "\033P@kitty-$1|%s\033\134" "$(printf "%s" "$2" | base64_encode)" > /dev/tty; }
 debug() { dcs_to_kitty "print" "debug: $1"; }
-echo_via_kitty() { dcs_to_kitty "echo" "$1"; }
 
 # If $HOME is configured set it here
 EXPORT_HOME_CMD
@@ -95,7 +104,7 @@ read_base64_from_tty() {
 untar_and_read_env() {
     # extract the tar file atomically, in the sense that any file from the
     # tarfile is only put into place after it has been fully written to disk
-    command -v tar > /dev/null 2> /dev/null || die "tar is not availiable on this server. The ssh kitten requires tar."
+    command -v tar > /dev/null 2> /dev/null || die "tar is not available on this server. The ssh kitten requires tar."
     tdir=$(command mktemp -d "$HOME/.kitty-ssh-kitten-untar-XXXXXXXXXXXX")
     [ $? = 0 ] || die "Creating temp directory failed"
     # suppress STDERR for tar as tar prints various warnings if for instance, timestamps are in the future

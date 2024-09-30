@@ -1,18 +1,28 @@
 Truly convenient SSH
 =========================================
 
+.. only:: man
+
+   Overview
+   ----------------
+
 * Automatic :ref:`shell_integration` on remote hosts
 
 * Easily :ref:`clone local shell/editor config <real_world_ssh_kitten_config>` on remote hosts
 
 * Automatic :opt:`re-use of existing connections <kitten-ssh.share_connections>` to avoid connection setup latency
 
-* Make kitty itself available in the remote host :opt:`on demand <kitten-ssh.remote_kitty>`
+* Make the kitten binary available in the remote host :opt:`on demand <kitten-ssh.remote_kitty>`
 
 * Easily :opt:`change terminal colors <kitten-ssh.color_scheme>` when connecting to remote hosts
 
+* Automatically :opt:`forward the kitty remote control socket <kitten-ssh.forward_remote_control>` to configured hosts
+
 .. versionadded:: 0.25.0
    Automatic shell integration, file transfer and reuse of connections
+
+.. versionadded:: 0.30.0
+   Automatic forwarding of remote control sockets
 
 The ssh kitten allows you to login easily to remote hosts, and automatically
 setup the environment there to be as comfortable as your local shell. You can
@@ -28,14 +38,14 @@ To try it out, simply run:
 
 .. code-block:: sh
 
-    kitty +kitten ssh some-hostname-to-connect-to
+    kitten ssh some-hostname-to-connect-to
 
 You should end up at a shell prompt on the remote host, with shell integration
 enabled. If you like it you can add an alias to it in your shell's rc files:
 
 .. code-block:: sh
 
-    alias s="kitty +kitten ssh"
+    alias s="kitten ssh"
 
 So now you can just type ``s hostname`` to connect.
 
@@ -74,13 +84,13 @@ Additionally, you can pass config options on the command line:
 
 .. code-block:: sh
 
-   kitty +kitten ssh --kitten interpreter=python servername
+   kitten ssh --kitten interpreter=python servername
 
 The :code:`--kitten` argument can be specified multiple times, with directives
-from :file:`ssh.conf`. These are merged with :file:`ssh.conf` as if they were
-appended to the end of that file. They apply only to the host being SSHed to by
-this invocation, so any :opt:`hostname <kitten-ssh.hostname>` directives are
-ignored.
+from :file:`ssh.conf`. These override the final options used for the matched host, as if they
+had been appended to the end of the matching section for that host in
+:file:`ssh.conf`. They apply only to the host being SSHed to by this invocation,
+so any :opt:`hostname <kitten-ssh.hostname>` directives are ignored.
 
 .. warning::
 

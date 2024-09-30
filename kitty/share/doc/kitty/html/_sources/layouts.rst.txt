@@ -141,7 +141,7 @@ The Splits Layout
 --------------------
 
 This is the most flexible layout. You can create any arrangement of windows
-by splitting exiting windows repeatedly. To best use this layout you should
+by splitting existing windows repeatedly. To best use this layout you should
 define a few extra key bindings in :file:`kitty.conf`::
 
     # Create a new window splitting the space used by the existing one so that
@@ -157,7 +157,7 @@ define a few extra key bindings in :file:`kitty.conf`::
     # one above the other if the existing window is tall.
     map f4 launch --location=split
 
-    # Rotate the current split, chaging its split axis from vertical to
+    # Rotate the current split, changing its split axis from vertical to
     # horizontal or vice versa
     map f7 layout_action rotate
 

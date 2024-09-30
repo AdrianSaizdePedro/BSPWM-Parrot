@@ -16,6 +16,26 @@ if [[ -n "$KITTY_BASH_INJECT" ]]; then
         [[ -f "$1" && -r "$1" ]] && builtin return 0; builtin return 1;
     }
 
+    if [[ -n "$ksi_val" && "$ksi_val" != *no-sudo* && -n "$TERMINFO" && ! ( -r "/usr/share/terminfo/x/xterm-kitty" || -r "/usr/share/terminfo/78/xterm-kitty" ) ]]; then
+        # this must be done before sourcing user bashrc otherwise aliasing of sudo does not work
+        sudo() {
+            # Ensure terminfo is available in sudo
+            builtin local is_sudoedit="n"
+            for arg; do
+                if [[ "$arg" == "-e" || $arg == "--edit" ]]; then
+                    is_sudoedit="y"
+                    builtin break;
+                fi
+                [[ "$arg" != -* && "$arg" != *=* ]] && builtin break  # command found
+            done
+            if [[ "$is_sudoedit" == "y" ]]; then
+                builtin command sudo "$@";
+            else
+                builtin command sudo TERMINFO="$TERMINFO" "$@";
+            fi
+        }
+    fi
+
     if [[ "$kitty_bash_inject" == *"posix"* ]]; then
         _ksi_sourceable "$KITTY_BASH_POSIX_ENV" && {
             builtin source "$KITTY_BASH_POSIX_ENV"
@@ -40,7 +60,7 @@ if [[ -n "$KITTY_BASH_INJECT" ]]; then
         else
             if [[ "$kitty_bash_inject" != *"no-rc"* ]]; then
                 # Linux distros build bash with -DSYS_BASHRC. Unfortunately, there is
-                # no way to to probe bash for it and different distros use different files
+                # no way to probe bash for it and different distros use different files
                 # Arch, Debian, Ubuntu use /etc/bash.bashrc
                 # Fedora uses /etc/bashrc sourced from ~/.bashrc instead of SYS_BASHRC
                 # Void Linux uses /etc/bash/bashrc
@@ -75,12 +95,12 @@ fi
 # which is not available on older bash
 builtin declare -A _ksi_prompt
 _ksi_prompt=(
-    [cursor]='y' [title]='y' [mark]='y' [complete]='y' [cwd]='y' [ps0]='' [ps0_suffix]='' [ps1]='' [ps1_suffix]='' [ps2]=''
+    [cursor]='y' [title]='y' [mark]='y' [complete]='y' [cwd]='y' [sudo]='y' [ps0]='' [ps0_suffix]='' [ps1]='' [ps1_suffix]='' [ps2]=''
     [hostname_prefix]='' [sourced]='y' [last_reported_cwd]=''
 )
 
 _ksi_main() {
-    builtin local ifs="$IFS"
+    builtin local ifs="$IFS" i
     IFS=" "
     for i in ${KITTY_SHELL_INTEGRATION[@]}; do
         case "$i" in
@@ -89,6 +109,7 @@ _ksi_main() {
             "no-prompt-mark") _ksi_prompt[mark]='n';;
             "no-complete") _ksi_prompt[complete]='n';;
             "no-cwd") _ksi_prompt[cwd]='n';;
+            "no-sudo") _ksi_prompt[sudo]='n';;
         esac
     done
     IFS="$ifs"
@@ -174,6 +195,22 @@ _ksi_main() {
         _ksi_prompt[ps0_suffix]+="\[\e[0 q\]"  # blinking default cursor
     fi
 
+    if [[ "${_ksi_prompt[title]}" == "y" ||  "${_ksi_prompt[mark]}" ]]; then
+        _ksi_get_current_command() {
+            builtin local last_cmd
+            last_cmd=$(HISTTIMEFORMAT= builtin history 1)
+            last_cmd="${last_cmd#*[[:digit:]]*[[:space:]]}"  # remove leading history number
+            last_cmd="${last_cmd#"${last_cmd%%[![:space:]]*}"}"  # remove remaining leading whitespace
+            if [[ "${_ksi_prompt[title]}" == "y" ]]; then
+                builtin printf "\e]2;%s%s\a" "${_ksi_prompt[hostname_prefix]@P}" "${last_cmd//[[:cntrl:]]}" # removes any control characters
+            fi
+            if [[ "${_ksi_prompt[mark]}" == "y" ]]; then
+                builtin printf "\e]133;C;cmdline=%q\a" "$last_cmd"
+            fi
+        }
+        _ksi_prompt[ps0]+='$(_ksi_get_current_command > /dev/tty)';
+    fi
+
     if [[ "${_ksi_prompt[title]}" == "y" ]]; then
         if [[ -z "$KITTY_PID" ]]; then
             if [[ -n "$SSH_TTY" || -n "$SSH2_TTY$KITTY_WINDOW_ID" ]]; then
@@ -191,25 +228,20 @@ _ksi_main() {
         # we use suffix here because some distros add title setting to their bashrc files by default
         _ksi_prompt[ps1_suffix]+="\[\e]2;${_ksi_prompt[hostname_prefix]}\w\a\]"
         if [[ "$HISTCONTROL" == *"ignoreboth"* ]] || [[ "$HISTCONTROL" == *"ignorespace"* ]]; then
-            _ksi_debug_print "ignoreboth or ignorespace present in bash HISTCONTROL setting, showing running command in window title will not be robust"
+            _ksi_debug_print "ignoreboth or ignorespace present in bash HISTCONTROL setting, showing running command will not be robust"
         fi
-        _ksi_get_current_command() {
-            builtin local last_cmd
-            last_cmd=$(HISTTIMEFORMAT= builtin history 1)
-            last_cmd="${last_cmd#*[[:digit:]]*[[:space:]]}"  # remove leading history number
-            last_cmd="${last_cmd#"${last_cmd%%[![:space:]]*}"}"  # remove remaining leading whitespace
-            builtin printf "\e]2;%s%s\a" "${_ksi_prompt[hostname_prefix]@P}" "${last_cmd//[[:cntrl:]]}"  # remove any control characters
-        }
-        _ksi_prompt[ps0_suffix]+='$(_ksi_get_current_command)'
     fi
 
     if [[ "${_ksi_prompt[mark]}" == "y" ]]; then
-        _ksi_prompt[ps1]+="\[\e]133;A\a\]"
+        # this can result in multiple D prompt marks or ones that dont
+        # correspond to a cmd but kitty handles this gracefully, only
+        # taking into account the first D after a C.
+        _ksi_prompt[ps1]+="\[\e]133;D;\$?\a\e]133;A\a\]"
         _ksi_prompt[ps2]+="\[\e]133;A;k=s\a\]"
-        _ksi_prompt[ps0]+="\[\e]133;C\a\]"
     fi
 
     builtin alias edit-in-kitty="kitten edit-in-kitty"
+
 
     if [[ "${_ksi_prompt[complete]}" == "y" ]]; then
         _ksi_completions() {
@@ -246,6 +278,7 @@ _ksi_main() {
         _ksi_prompt[ps2]="${_ksi_prompt[start_mark]}${_ksi_prompt[ps2]}${_ksi_prompt[end_mark]}"
     fi
     # BASH aborts the entire script when doing unset with failglob set, somebody should report this upstream
+    builtin local oldval
     oldval=$(builtin shopt -p failglob)
     builtin shopt -u failglob
     builtin unset _ksi_prompt[start_mark] _ksi_prompt[end_mark] _ksi_prompt[start_suffix_mark] _ksi_prompt[end_suffix_mark] _ksi_prompt[start_secondary_mark] _ksi_prompt[end_secondary_mark]
@@ -257,7 +290,7 @@ _ksi_main() {
     # from the shell
     builtin local pc
     pc='builtin declare -F _ksi_prompt_command > /dev/null 2> /dev/null && _ksi_prompt_command'
-    if [[ -z "${PROMPT_COMMAND}" ]]; then
+    if [[ -z "${PROMPT_COMMAND[*]}" ]]; then
         PROMPT_COMMAND=([0]="$pc")
     elif [[ $(builtin declare -p PROMPT_COMMAND 2> /dev/null) =~ 'declare -a PROMPT_COMMAND' ]]; then
         PROMPT_COMMAND+=("$pc")

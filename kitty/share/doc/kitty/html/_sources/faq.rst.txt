@@ -19,9 +19,9 @@ use Unicode characters from the private use area to represent symbols. Often
 these symbols are wide and should be rendered in two cells. However, since
 private use area symbols all have their width set to one in the Unicode
 standard, |kitty| renders them either smaller or truncated. The exception is if
-these characters are followed by a space or empty cell in which case kitty
-makes use of the extra cell to render them in two cells. This behavior can be
-turned off for specific symbols using :opt:`narrow_symbols`.
+these characters are followed by a space or en-space (U+2002) in which case
+kitty makes use of the extra cell to render them in two cells. This behavior
+can be turned off for specific symbols using :opt:`narrow_symbols`.
 
 
 Using a color theme with a background color does not work well in vim?
@@ -99,7 +99,7 @@ These issues all have the same root cause: the kitty terminfo files not being
 available. The most common way this happens is SSHing into a computer that does
 not have the kitty terminfo files. The simplest fix for that is running::
 
-    kitty +kitten ssh myserver
+    kitten ssh myserver
 
 It will automatically copy over the terminfo files and also magically enable
 :doc:`shell integration </shell-integration>` on the remote machine.
@@ -108,7 +108,7 @@ This :doc:`ssh kitten <kittens/ssh>` takes all the same command line arguments
 as :program:`ssh`, you can alias it to something small in your shell's rc files
 to avoid having to type it each time::
 
-    alias s="kitty +kitten ssh"
+    alias s="kitten ssh"
 
 If this does not work, see :ref:`manual_terminfo_copy` for alternative ways to
 get the kitty terminfo files onto a remote computer.
@@ -130,12 +130,15 @@ by running ``sudo visudo`` and adding the following line::
 
     Defaults env_keep += "TERM TERMINFO"
 
-If none of these are suitable for you, you can run sudo as follows::
+If none of these are suitable for you, you can run sudo as ::
 
-    sudo TERMINFO="$TERMINFO" -s -H
+    sudo TERMINFO="$TERMINFO"
 
-This will start a new root shell with the correct :envvar:`TERMINFO` value from your
-current environment copied over.
+This will make :envvar:`TERMINFO` available
+in the sudo environment. Create an alias in your shell rc files to make this
+convenient::
+
+    alias sudo="sudo TERMINFO=\"$TERMINFO\""
 
 If you have double width characters in your prompt, you may also need to
 explicitly set a UTF-8 locale, like::
@@ -148,7 +151,7 @@ I cannot use the key combination X in program Y?
 
 First, run::
 
-    kitty +kitten show_key -m kitty
+    kitten show-key -m kitty
 
 Press the key combination X. If the kitten reports the key press
 that means kitty is correctly sending the key press to terminal programs.
@@ -172,7 +175,7 @@ How do I change the colors in a running kitty instance?
 The easiest way to do it is to use the :doc:`themes kitten </kittens/themes>`,
 to choose a new color theme. Simply run::
 
-    kitty +kitten themes
+    kitten themes
 
 And choose your theme from the list.
 
@@ -260,11 +263,12 @@ fonts to be freely resizable, so it does not support bitmapped fonts.
    symbols from it automatically, and you can tell it to do so explicitly in
    case it doesn't with the :opt:`symbol_map` directive::
 
-        # Nerd Fonts v2.3.3
+        # Nerd Fonts v3.1.0
 
-        symbol_map U+23FB-U+23FE,U+2665,U+26A1,U+2B58,U+E000-U+E00A,U+E0A0-U+E0A3,U+E0B0-U+E0D4,U+E200-U+E2A9,U+E300-U+E3E3,U+E5FA-U+E6AA,U+E700-U+E7C5,U+EA60-U+EBEB,U+F000-U+F2E0,U+F300-U+F32F,U+F400-U+F4A9,U+F500-U+F8FF,U+F0001-U+F1AF0 Symbols Nerd Font Mono
+        symbol_map U+e000-U+e00a,U+ea60-U+ebeb,U+e0a0-U+e0c8,U+e0ca,U+e0cc-U+e0d4,U+e200-U+e2a9,U+e300-U+e3e3,U+e5fa-U+e6b1,U+e700-U+e7c5,U+f000-U+f2e0,U+f300-U+f372,U+f400-U+f532,U+f0001-U+f1af0 Symbols Nerd Font Mono
 
-   Those Unicode symbols beyond the ``E000-F8FF`` Unicode private use area are
+   Those Unicode symbols not in the `Unicode private use areas
+   <https://en.wikipedia.org/wiki/Private_Use_Areas>`__ are
    not included.
 
 If your font is not listed in ``kitty +list-fonts`` it means that it is not
@@ -346,17 +350,23 @@ homepage:
    :target: https://github.com/eccentric-j/eccentric-icons
    :width: 256
 
-On macOS you can put :file:`kitty.app.icns` or :file:`kitty.app.png` in the
+.. image:: https://github.com/sodapopcan/kitty-icon/raw/main/kitty.app.png
+   :target: https://github.com/sodapopcan/kitty-icon
+   :width: 256
+
+On macOS and X11 you can put :file:`kitty.app.icns` (macOS only) or :file:`kitty.app.png` in the
 :ref:`kitty configuration directory <confloc>`, and this icon will be applied
-automatically at startup. Unfortunately, Apple's Dock does not change its
-cached icon so the custom icon will revert when kitty is quit. Run the
-following to force the Dock to update its cached icons:
+automatically at startup. On X11, this will set the icon for kitty windows.
+
+Unfortunately, on macOS, Apple's Dock does not change its cached icon so the
+custom icon will revert when kitty is quit. Run the following to force the Dock
+to update its cached icons:
 
 .. code-block:: sh
 
     rm /var/folders/*/*/*/com.apple.dock.iconcache; killall Dock
 
-If you prefer not to keep a custom icon in the kitty config folder, you can
+If you prefer not to keep a custom icon in the kitty config folder, on macOS, you can
 also set it with the following command:
 
 .. code-block:: sh
@@ -381,23 +391,18 @@ You can also change the icon manually by following the steps:
 How do I map key presses in kitty to different keys in the terminal program?
 --------------------------------------------------------------------------------------
 
-This is accomplished by using ``map`` with :sc:`send_text <send_text>` in :file:`kitty.conf`.
+This is accomplished by using ``map`` with :ac:`send_key` in :file:`kitty.conf`.
 For example::
 
-    map alt+s send_text normal,application \x13
+    map alt+s send_key ctrl+s
 
-This maps :kbd:`alt+s` to :kbd:`ctrl+s`. To figure out what bytes to use for
-the :sc:`send_text <send_text>` you can use the ``show_key`` kitten. Run::
+This causes the program running in kitty to receive the :kbd:`ctrl+s` key when
+you press the :kbd:`alt+s` key. To see this in action, run::
 
-    kitty +kitten show_key
+    kitten show-key -m kitty
 
-Then press the key you want to emulate. Note that this kitten will only show
-keys that actually reach the terminal program, in particular, keys mapped to
-actions in kitty will not be shown. To check those first map them to
-:ac:`no_op`. You can also start a kitty instance without any shortcuts to
-interfere::
-
-    kitty -o clear_all_shortcuts=yes kitty +kitten show_key
+Which will print out what key events it receives. To send arbitrary text rather
+than a key press, see :sc:`send_text <send_text>` instead.
 
 
 How do I open a new window or tab with the same working directory as the current window?
@@ -448,9 +453,6 @@ do not use them, if at all possible. kitty contains features that do all of what
 tmux does, but better, with the exception of remote persistence (:iss:`391`).
 If you still want to use tmux, read on.
 
-Image display will not work, see `tmux issue
-<https://github.com/tmux/tmux/issues/1391>`__.
-
 Using ancient versions of tmux such as 1.8 will cause gibberish on screen when
 pressing keys (:iss:`3541`).
 
@@ -459,11 +461,17 @@ and then switch to another and these terminals have different :envvar:`TERM`
 variables, tmux will break. You will need to restart it as tmux does not support
 multiple terminfo definitions.
 
+Displaying images while inside programs such as nvim or ranger may not work
+depending on whether those programs have adopted support for the :ref:`unicode
+placeholders <graphics_unicode_placeholders>` workaround that kitty created
+for tmux refusing to support images.
+
 If you use any of the advanced features that kitty has innovated, such as
 :doc:`styled underlines </underlines>`, :doc:`desktop notifications
 </desktop-notifications>`, :doc:`extended keyboard support
-</keyboard-protocol>`, etc. they may or may not work, depending on the whims of
-tmux's maintainer, your version of tmux, etc.
+</keyboard-protocol>`, :doc:`file transfer </kittens/transfer>`, :doc:`the ssh
+kitten </kittens/ssh>`, :doc:`shell integration </shell-integration>` etc. they may or may not work,
+depending on the whims of tmux's maintainer, your version of tmux, etc.
 
 
 I opened and closed a lot of windows/tabs and top shows kitty's memory usage is very high?

@@ -4,6 +4,7 @@
 
 import base64
 import contextlib
+import errno
 import io
 import json
 import os
@@ -146,7 +147,11 @@ def compile_terminfo(base):
     tname = '.terminfo'
     q = os.path.join(base, tname, '78', 'xterm-kitty')
     if not os.path.exists(q):
-        os.makedirs(os.path.dirname(q), exist_ok=True)
+        try:
+            os.makedirs(os.path.dirname(q))
+        except EnvironmentError as e:
+            if e.errno != errno.EEXIST:
+                raise
         os.symlink('../x/xterm-kitty', q)
     if os.path.exists('/usr/share/misc/terminfo.cdb'):
         # NetBSD requires this
@@ -157,9 +162,10 @@ def compile_terminfo(base):
         [tic, '-x', '-o', os.path.join(base, tname), os.path.join(base, '.terminfo', 'kitty.terminfo')],
         stdout=subprocess.PIPE, stderr=subprocess.STDOUT
     )
+    output = p.stdout.read()
     rc = p.wait()
     if rc != 0:
-        getattr(sys.stderr, 'buffer', sys.stderr).write(p.stdout)
+        getattr(sys.stderr, 'buffer', sys.stderr).write(output)
         raise SystemExit('Failed to compile the terminfo database')
 
 
@@ -205,19 +211,22 @@ def get_data():
         sys.stdout.write('\r\033[K')
     data = base64.standard_b64decode(data)
     with temporary_directory(dir=HOME, prefix='.kitty-ssh-kitten-untar-') as tdir, tarfile.open(fileobj=io.BytesIO(data)) as tf:
-        tf.extractall(tdir)
+        try:
+            tf.extractall(tdir, filter='data')
+        except TypeError:
+            tf.extractall(tdir)
         with open(tdir + '/data.sh') as f:
             env_vars = f.read()
-            apply_env_vars(env_vars)
-            data_dir = os.environ.pop('KITTY_SSH_KITTEN_DATA_DIR')
-            if not os.path.isabs(data_dir):
-                data_dir = os.path.join(HOME, data_dir)
-            data_dir = os.path.abspath(data_dir)
-            shell_integration_dir = os.path.join(data_dir, 'shell-integration')
-            compile_terminfo(tdir + '/home')
-            move(tdir + '/home', HOME)
-            if os.path.exists(tdir + '/root'):
-                move(tdir + '/root', '/')
+        apply_env_vars(env_vars)
+        data_dir = os.environ.pop('KITTY_SSH_KITTEN_DATA_DIR')
+        if not os.path.isabs(data_dir):
+            data_dir = os.path.join(HOME, data_dir)
+        data_dir = os.path.abspath(data_dir)
+        shell_integration_dir = os.path.join(data_dir, 'shell-integration')
+        compile_terminfo(tdir + '/home')
+        move(tdir + '/home', HOME)
+        if os.path.exists(tdir + '/root'):
+            move(tdir + '/root', '/')
 
 
 def exec_zsh_with_integration():
@@ -289,7 +298,10 @@ def main():
     cwd = os.environ.pop('KITTY_LOGIN_CWD', '')
     install_kitty_bootstrap()
     if cwd:
-        os.chdir(cwd)
+        try:
+            os.chdir(cwd)
+        except Exception as err:
+            print(f'Failed to change working directory to: {cwd} with error: {err}', file=sys.stderr)
     ksi = frozenset(filter(None, os.environ.get('KITTY_SHELL_INTEGRATION', '').split()))
     exec_cmd = b'EXEC_CMD'
     if exec_cmd:

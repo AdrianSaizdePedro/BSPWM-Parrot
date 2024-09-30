@@ -27,35 +27,39 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-.TH "KITTY.CONF" "5" "Apr 21, 2023" "0.28.1" "kitty"
-.SH NAME
-kitty.conf \- kitty.conf Documentation
+.TH "kitty.conf" 5 "Jun 22, 2024" "0.35.2" "kitty"
+.SH Name
+kitty.conf \- Configuration file for kitty
+.SH Overview
 .sp
 \fIkitty\fP is highly customizable, everything from keyboard shortcuts, to rendering
 frames\-per\-second. See below for an overview of all customization possibilities.
 .sp
-You can open the config file within kitty by pressing \fI\%ctrl+shift+f2\fP
+You can open the config file within \fIkitty\fP by pressing \fI\%ctrl+shift+f2\fP
 (\fB⌘+,\fP on macOS). A \fBkitty.conf\fP with commented default
 configurations and descriptions will be created if the file does not exist.
-You can reload the config file within kitty by pressing \fI\%ctrl+shift+f5\fP
-(\fB⌃+⌘+,\fP on macOS) or sending kitty the \fBSIGUSR1\fP signal.
-You can also display the current configuration by pressing \fI\%ctrl+shift+f6\fP
-(\fB⌥+⌘+,\fP on macOS).
+You can reload the config file within \fIkitty\fP by pressing
+\fI\%ctrl+shift+f5\fP (\fB⌃+⌘+,\fP on macOS) or sending \fIkitty\fP the
+\fBSIGUSR1\fP signal with \fBkill \-SIGUSR1 $KITTY_PID\fP\&. You can also display the
+current configuration by pressing \fI\%ctrl+shift+f6\fP (\fB⌥+⌘+,\fP on macOS).
 .sp
 \fIkitty\fP looks for a config file in the OS config directories (usually
 \fB~/.config/kitty/kitty.conf\fP) but you can pass a specific path via the
-\fI\%kitty \-\-config\fP option or use the \fI\%KITTY_CONFIG_DIRECTORY\fP
-environment variable. See \fI\%kitty \-\-config\fP for full details.
+\X'tty: link #cmdoption-kitty-config'\fI\%kitty \-\-config\fP\X'tty: link' option or use the \X'tty: link #envvar-KITTY_CONFIG_DIRECTORY'\fI\%KITTY_CONFIG_DIRECTORY\fP\X'tty: link'
+environment variable. See \X'tty: link #cmdoption-kitty-config'\fI\%kitty \-\-config\fP\X'tty: link' for full details.
 .sp
-Comments can be added to the config file as lines starting with the \fB#\fP
+\fBComments\fP can be added to the config file as lines starting with the \fB#\fP
 character. This works only if the \fB#\fP character is the first character in the
 line.
 .sp
-You can include secondary config files via the \fBinclude\fP directive. If
+\fBLines can be split\fP by starting the next line with the \fB\e\fP character.
+All leading whitespace and the \fB\e\fP character are removed.
+.sp
+You can \fBinclude secondary config files\fP via the \fBinclude\fP directive. If
 you use a relative path for \fBinclude\fP, it is resolved with respect to the
 location of the current config file. Note that environment variables are
 expanded, so \fB${USER}.conf\fP becomes \fBname.conf\fP if
-\fBUSER=name\fP\&. A special environment variable \fI\%KITTY_OS\fP is available,
+\fBUSER=name\fP\&. A special environment variable \X'tty: link #envvar-KITTY_OS'\fI\%KITTY_OS\fP\X'tty: link' is available,
 to detect the operating system. It is \fBlinux\fP, \fBmacos\fP or \fBbsd\fP\&.
 Also, you can use \fBglobinclude\fP to include files
 matching a shell glob pattern and \fBenvinclude\fP to include configuration
@@ -63,15 +67,13 @@ from environment variables. For example:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 include other.conf
 # Include *.conf files from all subdirs of kitty.d inside the kitty config dir
 globinclude kitty.d/**/*.conf
 # Include the *contents* of all env vars starting with KITTY_CONF_
 envinclude KITTY_CONF_*
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -79,9 +81,10 @@ envinclude KITTY_CONF_*
 .INDENT 0.0
 .INDENT 3.5
 Syntax highlighting for \fBkitty.conf\fP in vim is available via
-\fI\%vim\-kitty\fP\&.
+\X'tty: link https://github.com/fladson/vim-kitty'\fI\%vim\-kitty\fP\X'tty: link'\&.
 .UNINDENT
 .UNINDENT
+.SH Fonts
 .sp
 kitty has very powerful font management. You can configure individual font faces
 and even specify special fonts for particular characters.
@@ -92,14 +95,12 @@ and even specify special fonts for particular characters.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 font_family      monospace
 bold_font        auto
 italic_font      auto
 bold_italic_font auto
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -114,14 +115,12 @@ For example:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 font_family      Operator Mono Book
 bold_font        Operator Mono Medium
 italic_font      Operator Mono Book Italic
 bold_italic_font Operator Mono Medium Italic
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -131,15 +130,13 @@ bold_italic_font Operator Mono Medium Italic
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 font_size 11.0
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
-Font size (in pts)
+Font size (in pts).
 .INDENT 0.0
 .TP
 .B force_ltr
@@ -147,11 +144,9 @@ Font size (in pts)
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 force_ltr no
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -159,13 +154,13 @@ kitty does not support BIDI (bidirectional text), however, for RTL scripts,
 words are automatically displayed in RTL. That is to say, in an RTL script, the
 words \(dqHELLO WORLD\(dq display in kitty as \(dqWORLD HELLO\(dq, and if you try to select
 a substring of an RTL\-shaped string, you will get the character that would be
-there had the the string been LTR. For example, assuming the Hebrew word
+there had the string been LTR. For example, assuming the Hebrew word
 ירושלים, selecting the character that on the screen appears to be ם actually
-writes into the selection buffer the character י.  kitty\(aqs default behavior is
+writes into the selection buffer the character י. kitty\(aqs default behavior is
 useful in conjunction with a filter to reverse the word order, however, if you
 wish to manipulate RTL glyphs, it can be very challenging to work with, so this
 option is provided to turn it off. Furthermore, this option can be used with the
-command line program \fI\%GNU FriBidi\fP to get BIDI support, because it
+command line program \X'tty: link https://github.com/fribidi/fribidi#executable'\fI\%GNU FriBidi\fP\X'tty: link' to get BIDI support, because it
 will force kitty to always treat the text as LTR, which FriBidi expects for
 terminals.
 .INDENT 0.0
@@ -177,11 +172,9 @@ Has no default values. Example values are shown below:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 symbol_map U+E0A0\-U+E0A3,U+E0C0\-U+E0C7 PowerlineSymbols
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -194,11 +187,9 @@ times. The syntax is:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 symbol_map codepoints Font Family Name
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -210,11 +201,9 @@ Has no default values. Example values are shown below:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 narrow_symbols U+E0A0\-U+E0A3,U+E0C0\-U+E0C7 1
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -227,11 +216,9 @@ This option can be specified multiple times. The syntax is:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 narrow_symbols codepoints [optionally the number of cells]
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -241,11 +228,9 @@ narrow_symbols codepoints [optionally the number of cells]
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 disable_ligatures never
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -258,13 +243,11 @@ or by defining shortcuts for it in \fBkitty.conf\fP, for example:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map alt+1 disable_ligatures_in active always
 map alt+2 disable_ligatures_in all never
 map alt+3 disable_ligatures_in tab cursor
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -280,11 +263,9 @@ Has no default values. Example values are shown below:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 font_features none
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -296,7 +277,7 @@ Code also includes other discretionary features known as Stylistic Sets which
 have the tags \fBss01\fP through \fBss20\fP\&.
 .sp
 For the exact syntax to use for individual features, see the
-\fI\%HarfBuzz documentation\fP\&.
+\X'tty: link https://harfbuzz.github.io/harfbuzz-hb-common.html#hb-feature-from-string'\fI\%HarfBuzz documentation\fP\X'tty: link'\&.
 .sp
 Note that this code is indexed by PostScript name, and not the font family. This
 allows you to define very precise feature settings; e.g. you can disable a
@@ -309,8 +290,7 @@ To get the PostScript name for a font, use \fBkitty +list\-fonts \-\-psnames\fP:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 $ kitty +list\-fonts \-\-psnames | grep Fira
 Fira Code
 Fira Code Bold (FiraCode\-Bold)
@@ -318,8 +298,7 @@ Fira Code Light (FiraCode\-Light)
 Fira Code Medium (FiraCode\-Medium)
 Fira Code Regular (FiraCode\-Regular)
 Fira Code Retina (FiraCode\-Retina)
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -329,11 +308,9 @@ Enable alternate zero and oldstyle numerals:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 font_features FiraCode\-Retina +zero +onum
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -341,11 +318,9 @@ Enable only alternate zero in the bold font:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 font_features FiraCode\-Bold +zero
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -354,11 +329,9 @@ font) breaks up monotony:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 font_features TT2020StyleB\-Regular \-liga +calt
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -368,11 +341,9 @@ You can do this with e.g.:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 font_features UnifontMedium +isol \-medi \-fina \-init
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -387,13 +358,11 @@ For example:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 modify_font underline_position \-2
 modify_font underline_thickness 150%
 modify_font strikethrough_position 2px
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -403,13 +372,11 @@ For example:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 modify_font cell_width 80%
 modify_font cell_height \-2px
 modify_font baseline 3
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -424,11 +391,9 @@ might cause rendering artifacts, so use with care.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 box_drawing_scale 0.001, 1, 1.5, 2
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -443,11 +408,9 @@ lines.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 undercurl_style thin\-sparse
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -462,11 +425,9 @@ the curl will peak once per character, with dense twice.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 text_composition_strategy platform
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -480,7 +441,7 @@ light text on dark backgrounds thinner. It might also make some text appear like
 the strokes are uneven.
 .sp
 You can fine tune the actual contrast curve used for glyph composition by
-specifying two space separated numbers for this setting.
+specifying up to two space\-separated numbers for this setting.
 .sp
 The first number is the gamma adjustment, which controls the thickness of dark
 text on light backgrounds. Increasing the value will make text appear thicker.
@@ -500,25 +461,53 @@ Then adjust the second parameter until it looks good. Then switch to a light the
 and adjust the first parameter until the perceived thickness matches the dark theme.
 .INDENT 0.0
 .TP
+.B text_fg_override_threshold
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.EX
+text_fg_override_threshold 0
+.EE
+.UNINDENT
+.UNINDENT
+.sp
+The minimum accepted difference in luminance between the foreground and background
+color, below which kitty will override the foreground color. It is percentage
+ranging from \fB0\fP to \fB100\fP\&. If the difference in luminance of the
+foreground and background is below this threshold, the foreground color will be set
+to white if the background is dark or black if the background is light. The default
+value is \fB0\fP, which means no overriding is performed. Useful when working with applications
+that use colors that do not contrast well with your preferred color scheme.
+.sp
+WARNING: Some programs use characters (such as block characters) for graphics
+display and may expect to be able to set the foreground and background to the
+same color (or similar colors).  If you see unexpected stripes, dots, lines,
+incorrect color, no color where you expect color, or any kind of graphic
+display problem try setting \fI\%text_fg_override_threshold\fP to \fB0\fP to
+see if this is the cause of the problem.
+.SH Cursor customization
+.INDENT 0.0
+.TP
 .B cursor
 .UNINDENT
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 cursor #cccccc
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 Default cursor color. If set to the special value \fBnone\fP the cursor will
-be rendered with a \(dqreverse video\(dq effect. It\(aqs color will be the color of the
+be rendered with a \(dqreverse video\(dq effect. Its color will be the color of the
 text in the cell it is over and the text will be rendered with the background
 color of the cell. Note that if the program running in the terminal sets a
 cursor color, this takes precedence. Also, the cursor colors are modified if
-the cell background and foreground colors have very low contrast.
+the cell background and foreground colors have very low contrast. Note that some
+themes set this value, so if you want to override it, place your value after
+the lines where the theme file is included.
 .INDENT 0.0
 .TP
 .B cursor_text_color
@@ -526,18 +515,17 @@ the cell background and foreground colors have very low contrast.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 cursor_text_color #111111
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 The color of text under the cursor. If you want it rendered with the
 background color of the cell underneath instead, use the special keyword:
-background. Note that if \fI\%cursor\fP is set to \fBnone\fP then this option
-is ignored.
+\fIbackground\fP\&. Note that if \fI\%cursor\fP is set to \fBnone\fP then this option
+is ignored. Note that some themes set this value, so if you want to override it,
+place your value after the lines where the theme file is included.
 .INDENT 0.0
 .TP
 .B cursor_shape
@@ -545,11 +533,9 @@ is ignored.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 cursor_shape block
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -557,9 +543,25 @@ The cursor shape can be one of \fBblock\fP, \fBbeam\fP, \fBunderline\fP\&.
 Note that when reloading the config this will be changed only if the cursor
 shape has not been set by the program running in the terminal. This sets the
 default cursor shape, applications running in the terminal can override it. In
-particular, \fI\%shell integration\fP in kitty sets the
+particular, \X'tty: link #shell-integration'\fI\%shell integration\fP\X'tty: link' in kitty sets the
 cursor shape to \fBbeam\fP at shell prompts. You can avoid this by setting
 \fI\%shell_integration\fP to \fBno\-cursor\fP\&.
+.INDENT 0.0
+.TP
+.B cursor_shape_unfocused
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.EX
+cursor_shape_unfocused hollow
+.EE
+.UNINDENT
+.UNINDENT
+.sp
+Defines the text cursor shape when the OS window is not focused. The unfocused
+cursor shape can be one of \fBblock\fP, \fBbeam\fP, \fBunderline\fP,
+\fBhollow\fP\&.
 .INDENT 0.0
 .TP
 .B cursor_beam_thickness
@@ -567,11 +569,9 @@ cursor shape to \fBbeam\fP at shell prompts. You can avoid this by setting
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 cursor_beam_thickness 1.5
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -583,11 +583,9 @@ The thickness of the beam cursor (in pts).
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 cursor_underline_thickness 2.0
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -599,11 +597,9 @@ The thickness of the underline cursor (in pts).
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 cursor_blink_interval \-1
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -617,16 +613,15 @@ limited to \fI\%repaint_delay\fP\&.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 cursor_stop_blinking_after 15.0
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 Stop blinking cursor after the specified number of seconds of keyboard
 inactivity. Set to zero to never stop blinking.
+.SH Scrollback
 .INDENT 0.0
 .TP
 .B scrollback_lines
@@ -634,11 +629,9 @@ inactivity. Set to zero to never stop blinking.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 scrollback_lines 2000
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -650,16 +643,31 @@ using \fI\%scrollback_pager_history_size\fP\&. Note that on config reload if thi
 is changed it will only affect newly created windows, not existing ones.
 .INDENT 0.0
 .TP
+.B scrollback_indicator_opacity
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.EX
+scrollback_indicator_opacity 1.0
+.EE
+.UNINDENT
+.UNINDENT
+.sp
+The opacity of the scrollback indicator which is a small colored rectangle that moves
+along the right hand side of the window as you scroll, indicating what fraction you
+have scrolled. The default is one which means fully opaque, aka visible.
+Set to a value between zero and one to make the indicator less visible.
+.INDENT 0.0
+.TP
 .B scrollback_pager
 .UNINDENT
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 scrollback_pager less \-\-chop\-long\-lines \-\-RAW\-CONTROL\-CHARS +INPUT_LINE_NUMBER
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -678,11 +686,9 @@ output.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 scrollback_pager_history_size 0
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -690,7 +696,7 @@ Separate scrollback history size (in MB), used only for browsing the scrollback
 buffer with pager. This separate buffer is not available for interactive
 scrolling but will be piped to the pager program when viewing scrollback buffer
 in a separate window. The current implementation stores the data in UTF\-8, so
-approximatively 10000 lines per megabyte at 100 chars per line, for pure ASCII,
+approximately 10000 lines per megabyte at 100 chars per line, for pure ASCII,
 unformatted text. A value of zero or less disables this feature. The maximum
 allowed size is 4GB. Note that on config reload if this is changed it will only
 affect newly created windows, not existing ones.
@@ -701,11 +707,9 @@ affect newly created windows, not existing ones.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 scrollback_fill_enlarged_window no
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -717,11 +721,9 @@ Fill new space with lines from the scrollback buffer after enlarging a window.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 wheel_scroll_multiplier 5.0
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -736,11 +738,9 @@ to change scroll direction. See also \fI\%wheel_scroll_min_lines\fP\&.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 wheel_scroll_min_lines 1
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -756,17 +756,16 @@ negative number, the minimum number of lines will always be added.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 touch_scroll_multiplier 1.0
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 Multiplier for the number of lines scrolled by a touchpad. Note that this is
 only used for high precision scrolling devices on platforms such as macOS and
 Wayland. Use negative numbers to change scroll direction.
+.SH Mouse
 .INDENT 0.0
 .TP
 .B mouse_hide_wait
@@ -774,11 +773,9 @@ Wayland. Use negative numbers to change scroll direction.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 mouse_hide_wait 3.0
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -794,12 +791,10 @@ is too much effort.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 url_color #0087bd
 url_style curly
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -813,15 +808,13 @@ be one of: \fBnone\fP, \fBstraight\fP, \fBdouble\fP, \fBcurly\fP,
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 open_url_with default
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
-The program to open clicked URLs. The special value \fBdefault\fP with first
+The program to open clicked URLs. The special value \fBdefault\fP will first
 look for any URL handlers defined via the \fI\%Scripting the mouse click\fP facility and if
 non are found, it will use the Operating System\(aqs default URL handler
 (\fBopen\fP on macOS and \fBxdg\-open\fP on Linux).
@@ -832,11 +825,9 @@ non are found, it will use the Operating System\(aqs default URL handler
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 url_prefixes file ftp ftps gemini git gopher http https irc ircs kitty mailto news sftp ssh
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -848,17 +839,16 @@ The set of URL prefixes to look for when detecting a URL under the mouse cursor.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 detect_urls yes
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 Detect URLs under the mouse. Detected URLs are highlighted with an underline and
 the mouse cursor becomes a hand over them. Even if this option is disabled, URLs
-are still clickable.
+are still clickable. See also the \fI\%underline_hyperlinks\fP option to control
+how hyperlinks (as opposed to plain text URLs) are displayed.
 .INDENT 0.0
 .TP
 .B url_excluded_characters
@@ -878,11 +868,9 @@ a double backslash.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 show_hyperlink_targets no
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -890,16 +878,33 @@ When the mouse hovers over a terminal hyperlink, show the actual URL that will
 be activated when the hyperlink is clicked.
 .INDENT 0.0
 .TP
+.B underline_hyperlinks
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.EX
+underline_hyperlinks hover
+.EE
+.UNINDENT
+.UNINDENT
+.sp
+Control how hyperlinks are underlined. They can either be underlined on mouse
+\fBhover\fP, \fBalways\fP (i.e. permanently underlined) or \fBnever\fP which means
+that kitty will not apply any underline styling to hyperlinks.
+Uses the \fI\%url_style\fP and \fI\%url_color\fP settings for the underline style. Note
+that reloading the config and changing this value to/from \fBalways\fP will only
+affect text subsequently received by kitty.
+.INDENT 0.0
+.TP
 .B copy_on_select
 .UNINDENT
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 copy_on_select no
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -913,12 +918,10 @@ For example:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 copy_on_select a1
 map shift+cmd+v paste_from_buffer a1
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -932,11 +935,9 @@ clipboard.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
-paste_actions quote\-urls\-at\-prompt
-.ft P
-.fi
+.EX
+paste_actions quote\-urls\-at\-prompt,confirm
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -948,14 +949,28 @@ The supported paste actions are:
 If the text being pasted is a URL and the cursor is at a shell prompt,
 automatically quote the URL (needs \fI\%shell_integration\fP).
 .TP
+.B \fBreplace\-dangerous\-control\-codes\fP
+Replace dangerous control codes from pasted text, without confirmation.
+.TP
+.B \fBreplace\-newline\fP
+Replace the newline character from pasted text, without confirmation.
+.TP
 .B \fBconfirm\fP:
-Confirm the paste if bracketed paste mode is not active or there is
-a large amount of text being pasted.
+Confirm the paste if the text to be pasted contains any terminal control codes
+as this can be dangerous, leading to code execution if the shell/program running
+in the terminal does not properly handle these.
+.TP
+.B \fBconfirm\-if\-large\fP
+Confirm the paste if it is very large (larger than 16KB) as pasting
+large amounts of text into shells can be very slow.
 .TP
 .B \fBfilter\fP:
 Run the filter_paste() function from the file \fBpaste\-actions.py\fP in
 the kitty config directory on the pasted text. The text returned by the
 function will be actually pasted.
+.TP
+.B \fBno\-op\fP:
+Has no effect.
 .UNINDENT
 .INDENT 0.0
 .TP
@@ -964,11 +979,9 @@ function will be actually pasted.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 strip_trailing_spaces never
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -982,11 +995,9 @@ selections. A value of \fBalways\fP will always do it.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 select_by_word_characters @\-./_~?&=%+#
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -1011,11 +1022,9 @@ directions.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 click_interval \-1.0
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -1029,15 +1038,15 @@ fallback to 0.5.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 focus_follows_mouse no
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 Set the active window to the window under the mouse when moving the mouse around.
+On macOS, this will also cause the OS Window under the mouse to be focused automatically when the
+mouse enters it.
 .INDENT 0.0
 .TP
 .B pointer_shape_when_grabbed
@@ -1045,16 +1054,14 @@ Set the active window to the window under the mouse when moving the mouse around
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 pointer_shape_when_grabbed arrow
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 The shape of the mouse pointer when the program running in the terminal grabs
-the mouse. Valid values are: \fBarrow\fP, \fBbeam\fP and \fBhand\fP\&.
+the mouse.
 .INDENT 0.0
 .TP
 .B default_pointer_shape
@@ -1062,16 +1069,13 @@ the mouse. Valid values are: \fBarrow\fP, \fBbeam\fP and \fBhand\fP\&.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 default_pointer_shape beam
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
-The default shape of the mouse pointer. Valid values are: \fBarrow\fP,
-\fBbeam\fP and \fBhand\fP\&.
+The default shape of the mouse pointer.
 .INDENT 0.0
 .TP
 .B pointer_shape_when_dragging
@@ -1079,27 +1083,22 @@ The default shape of the mouse pointer. Valid values are: \fBarrow\fP,
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 pointer_shape_when_dragging beam
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
-The default shape of the mouse pointer when dragging across text. Valid values
-are: \fBarrow\fP, \fBbeam\fP and \fBhand\fP\&.
-.SH MOUSE ACTIONS
+The default shape of the mouse pointer when dragging across text.
+.SS Mouse actions
 .sp
 Mouse buttons can be mapped to perform arbitrary actions. The syntax is:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 mouse_map button\-name event\-type modes action
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -1118,20 +1117,18 @@ grabbed by the program running in the terminal, or not. The values are
 mouse events. Note that the click and double click events have a delay of
 \fI\%click_interval\fP to disambiguate from double and triple presses.
 .sp
-You can run kitty with the \fI\%kitty \-\-debug\-input\fP command line option
+You can run kitty with the \X'tty: link #cmdoption-kitty-debug-input'\fI\%kitty \-\-debug\-input\fP\X'tty: link' command line option
 to see mouse events. See the builtin actions below to get a sense of what is
 possible.
 .sp
-If you want to unmap an action, map it to \fI\%no_op\fP\&. For example, to disable
+If you want to unmap a button, map it to nothing. For example, to disable
 opening of URLs with a plain click:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
-mouse_map left click ungrabbed no_op
-.ft P
-.fi
+.EX
+mouse_map left click ungrabbed
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -1151,11 +1148,9 @@ automatically end it and no release event will be dispatched.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 clear_all_mouse_actions no
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -1168,18 +1163,16 @@ remove the default mouse actions.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 mouse_map left click ungrabbed mouse_handle_click selection link prompt
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 First check for a selection and if one exists do nothing. Then check for a link
 under the mouse cursor and if one exists, click it. Finally check if the click
 happened at the current shell prompt and if so, move the cursor to the click
-location. Note that this requires \fI\%shell integration\fP
+location. Note that this requires \X'tty: link #shell-integration'\fI\%shell integration\fP\X'tty: link'
 to work.
 .INDENT 0.0
 .TP
@@ -1188,11 +1181,9 @@ to work.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 mouse_map shift+left click grabbed,ungrabbed mouse_handle_click selection link prompt
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -1205,11 +1196,9 @@ grabbed by the program running in the terminal.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 mouse_map ctrl+shift+left release grabbed,ungrabbed mouse_handle_click link
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -1223,11 +1212,9 @@ double clicks.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 mouse_map ctrl+shift+left press grabbed discard_event
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -1240,11 +1227,9 @@ mouse, as the corresponding release event is used to open a URL.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 mouse_map middle release ungrabbed paste_from_selection
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -1254,11 +1239,9 @@ mouse_map middle release ungrabbed paste_from_selection
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 mouse_map left press ungrabbed mouse_selection normal
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -1268,11 +1251,9 @@ mouse_map left press ungrabbed mouse_selection normal
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 mouse_map ctrl+alt+left press ungrabbed mouse_selection rectangle
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -1282,11 +1263,9 @@ mouse_map ctrl+alt+left press ungrabbed mouse_selection rectangle
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 mouse_map left doublepress ungrabbed mouse_selection word
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -1296,11 +1275,9 @@ mouse_map left doublepress ungrabbed mouse_selection word
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 mouse_map left triplepress ungrabbed mouse_selection line
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -1310,15 +1287,13 @@ mouse_map left triplepress ungrabbed mouse_selection line
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 mouse_map ctrl+alt+left triplepress ungrabbed mouse_selection line_from_point
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
-Select from the clicked point to the end of the line.
+Select from the clicked point to the end of the line. If you would like to select the word at the point and then extend to the rest of the line, change \fIline_from_point\fP to \fIword_and_line_from_point\fP\&.
 .INDENT 0.0
 .TP
 .B Extend the current selection
@@ -1326,11 +1301,9 @@ Select from the clicked point to the end of the line.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 mouse_map right press ungrabbed mouse_selection extend
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -1343,12 +1316,10 @@ boundary, use \fBmove\-end\fP instead of \fBextend\fP\&.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 mouse_map shift+middle release ungrabbed,grabbed paste_selection
 mouse_map shift+middle press grabbed discard_event
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -1358,11 +1329,9 @@ mouse_map shift+middle press grabbed discard_event
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 mouse_map shift+left press ungrabbed,grabbed mouse_selection normal
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -1372,11 +1341,9 @@ mouse_map shift+left press ungrabbed,grabbed mouse_selection normal
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 mouse_map ctrl+shift+alt+left press ungrabbed,grabbed mouse_selection rectangle
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -1386,11 +1353,9 @@ mouse_map ctrl+shift+alt+left press ungrabbed,grabbed mouse_selection rectangle
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 mouse_map shift+left doublepress ungrabbed,grabbed mouse_selection word
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -1400,11 +1365,9 @@ mouse_map shift+left doublepress ungrabbed,grabbed mouse_selection word
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 mouse_map shift+left triplepress ungrabbed,grabbed mouse_selection line
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -1414,15 +1377,13 @@ mouse_map shift+left triplepress ungrabbed,grabbed mouse_selection line
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 mouse_map ctrl+shift+alt+left triplepress ungrabbed,grabbed mouse_selection line_from_point
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
-Select from the clicked point to the end of the line even when grabbed.
+Select from the clicked point to the end of the line even when grabbed. If you would like to select the word at the point and then extend to the rest of the line, change \fIline_from_point\fP to \fIword_and_line_from_point\fP\&.
 .INDENT 0.0
 .TP
 .B Extend the current selection even when grabbed
@@ -1430,11 +1391,9 @@ Select from the clicked point to the end of the line even when grabbed.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 mouse_map shift+right press ungrabbed,grabbed mouse_selection extend
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -1444,15 +1403,14 @@ mouse_map shift+right press ungrabbed,grabbed mouse_selection extend
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 mouse_map ctrl+shift+right press ungrabbed mouse_show_command_output
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
-Requires \fI\%shell integration\fP to work.
+Requires \X'tty: link #shell-integration'\fI\%shell integration\fP\X'tty: link' to work.
+.SH Performance tuning
 .INDENT 0.0
 .TP
 .B repaint_delay
@@ -1460,11 +1418,9 @@ Requires \fI\%shell integration\fP to work.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 repaint_delay 10
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -1481,11 +1437,9 @@ pending input to be processed, this option is ignored.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 input_delay 3
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -1493,7 +1447,7 @@ Delay before input from the program running in the terminal is processed (in
 milliseconds). Note that decreasing it will increase responsiveness, but also
 increase CPU usage and might cause flicker in full screen programs that redraw
 the entire screen on each loop, because kitty is so fast that partial screen
-updates will be drawn.
+updates will be drawn. This setting is ignored when the input buffer is almost full.
 .INDENT 0.0
 .TP
 .B sync_to_monitor
@@ -1501,19 +1455,18 @@ updates will be drawn.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 sync_to_monitor yes
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 Sync screen updates to the refresh rate of the monitor. This prevents
-\fI\%screen tearing\fP when
+\X'tty: link https://en.wikipedia.org/wiki/Screen_tearing'\fI\%screen tearing\fP\X'tty: link' when
 scrolling. However, it limits the rendering speed to the refresh rate of your
 monitor. With a very high speed mouse/high keyboard repeat rate, you may notice
 some slight input latency. If so, set this to \fBno\fP\&.
+.SH Terminal bell
 .INDENT 0.0
 .TP
 .B enable_audio_bell
@@ -1521,11 +1474,9 @@ some slight input latency. If so, set this to \fBno\fP\&.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 enable_audio_bell yes
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -1537,11 +1488,9 @@ The audio bell. Useful to disable it in environments that require silence.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 visual_bell_duration 0.0
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -1554,11 +1503,9 @@ the specified number of seconds. Set to zero to disable.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 visual_bell_color none
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -1572,16 +1519,14 @@ set it to a darker color.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 window_alert_on_bell yes
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 Request window attention on bell. Makes the dock icon bounce on macOS or the
-taskbar flash on linux.
+taskbar flash on Linux.
 .INDENT 0.0
 .TP
 .B bell_on_tab
@@ -1589,11 +1534,9 @@ taskbar flash on linux.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 bell_on_tab \(dq🔔 \(dq
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -1612,16 +1555,14 @@ are converted to the default bell symbol and \fBno\fP, \fBn\fP,
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 command_on_bell none
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 Program to run when a bell occurs. The environment variable
-\fI\%KITTY_CHILD_CMDLINE\fP can be used to get the program running in the
+\X'tty: link #envvar-KITTY_CHILD_CMDLINE'\fI\%KITTY_CHILD_CMDLINE\fP\X'tty: link' can be used to get the program running in the
 window in which the bell occurred.
 .INDENT 0.0
 .TP
@@ -1630,18 +1571,16 @@ window in which the bell occurred.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 bell_path none
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 Path to a sound file to play as the bell sound. If set to \fBnone\fP, the
 system default bell sound is used. Must be in a format supported by the
 operating systems sound API, such as WAV or OGA on Linux (libcanberra) or AIFF,
-MP3 or WAV on macOS (NSSound)
+MP3 or WAV on macOS (NSSound).
 .INDENT 0.0
 .TP
 .B linux_bell_theme
@@ -1649,15 +1588,14 @@ MP3 or WAV on macOS (NSSound)
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 linux_bell_theme __custom
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 The XDG Sound Theme kitty will use to play the bell sound. Defaults to the custom theme name used by GNOME and Budgie, falling back to the default freedesktop theme if it does not exist. This option may be removed if Linux ever provides desktop\-agnostic support for setting system sound themes.
+.SH Window layout
 .INDENT 0.0
 .TP
 .B remember_window_size, initial_window_width, initial_window_height
@@ -1665,19 +1603,17 @@ The XDG Sound Theme kitty will use to play the bell sound. Defaults to the custo
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 remember_window_size  yes
 initial_window_width  640
 initial_window_height 400
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
-If enabled, the \fI\%OS Window\fP size will be remembered so that
+If enabled, the \X'tty: link #term-os_window'\fI\%OS Window\fP\X'tty: link' size will be remembered so that
 new instances of kitty will have the same size as the previous instance.
-If disabled, the \fI\%OS Window\fP will initially have size
+If disabled, the \X'tty: link #term-os_window'\fI\%OS Window\fP\X'tty: link' will initially have size
 configured by initial_window_width/height, in pixels. You can use a suffix of
 \(dqc\(dq on the width/height values to have them interpreted as number of cells
 instead of pixels.
@@ -1688,18 +1624,16 @@ instead of pixels.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 enabled_layouts *
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 The enabled window layouts. A comma separated list of layout names. The special
 value \fBall\fP means all layouts. The first listed layout will be used as the
 startup layout. Default configuration is all layouts in alphabetical order. For
-a list of available layouts, see the \fI\%Layouts\fP\&.
+a list of available layouts, see the \X'tty: link #layouts'\fI\%Layouts\fP\X'tty: link'\&.
 .INDENT 0.0
 .TP
 .B window_resize_step_cells, window_resize_step_lines
@@ -1707,12 +1641,10 @@ a list of available layouts, see the \fI\%Layouts\fP\&.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 window_resize_step_cells 2
 window_resize_step_lines 2
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -1727,11 +1659,9 @@ resizing.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 window_border_width 0.5pt
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -1747,11 +1677,9 @@ windows.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 draw_minimal_borders yes
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -1766,11 +1694,9 @@ drawn.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 window_margin_width 0
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -1784,11 +1710,9 @@ set top, horizontal and bottom. Four values set top, right, bottom and left.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 single_window_margin_width \-1
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -1804,11 +1728,9 @@ bottom and left.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 window_padding_width 0
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -1818,16 +1740,32 @@ sides. Three values set top, horizontal and bottom. Four values set top, right,
 bottom and left.
 .INDENT 0.0
 .TP
+.B single_window_padding_width
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.EX
+single_window_padding_width \-1
+.EE
+.UNINDENT
+.UNINDENT
+.sp
+The window padding to use when only a single window is visible (in pts). Negative
+values will cause the value of \fI\%window_padding_width\fP to be used instead. A
+single value sets all four sides. Two values set the vertical and horizontal
+sides. Three values set top, horizontal and bottom. Four values set top, right,
+bottom and left.
+.INDENT 0.0
+.TP
 .B placement_strategy
 .UNINDENT
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 placement_strategy center
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -1836,6 +1774,9 @@ the terminal window will have some extra padding on the sides. You can control
 how that padding is distributed with this option. Using a value of
 \fBcenter\fP means the cell area will be placed centrally. A value of
 \fBtop\-left\fP means the padding will be only at the bottom and right edges.
+The value can be one of: \fBtop\-left\fP, \fBtop\fP, \fBtop\-right\fP,
+\fBleft\fP, \fBcenter\fP, \fBright\fP, \fBbottom\-left\fP,
+\fBbottom\fP, \fBbottom\-right\fP\&.
 .INDENT 0.0
 .TP
 .B active_border_color
@@ -1843,11 +1784,9 @@ how that padding is distributed with this option. Using a value of
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 active_border_color #00ff00
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -1860,11 +1799,9 @@ draw borders around the active window.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 inactive_border_color #cccccc
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -1876,11 +1813,9 @@ The color for the border of inactive windows.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 bell_border_color #ff5a00
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -1892,11 +1827,9 @@ The color for the border of inactive windows in which a bell has occurred.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 inactive_text_alpha 1.0
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -1909,19 +1842,19 @@ and one, with zero being fully faded).
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 hide_window_decorations no
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 Hide the window decorations (title\-bar and window borders) with \fByes\fP\&. On
-macOS, \fBtitlebar\-only\fP can be used to only hide the titlebar. Whether this
-works and exactly what effect it has depends on the window manager/operating
+macOS, \fBtitlebar\-only\fP and \fBtitlebar\-and\-corners\fP can be used to only hide the titlebar and the rounded corners.
+Whether this works and exactly what effect it has depends on the window manager/operating
 system. Note that the effects of changing this option when reloading config
-are undefined.
+are undefined. When using \fBtitlebar\-only\fP, it is useful to also set
+\fI\%window_margin_width\fP and \fI\%placement_strategy\fP to prevent the rounded
+corners from clipping text. Or use \fBtitlebar\-and\-corners\fP\&.
 .INDENT 0.0
 .TP
 .B window_logo_path
@@ -1929,11 +1862,9 @@ are undefined.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 window_logo_path none
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -1941,7 +1872,7 @@ Path to a logo image. Must be in PNG format. Relative paths are interpreted
 relative to the kitty config directory. The logo is displayed in a corner of
 every kitty window. The position is controlled by \fI\%window_logo_position\fP\&.
 Individual windows can be configured to have different logos either using the
-\fI\%launch\fP action or the \fI\%remote control\fP facility.
+\X'tty: link #action-launch'\fI\%launch\fP\X'tty: link' action or the \fI\%remote control\fP facility.
 .INDENT 0.0
 .TP
 .B window_logo_position
@@ -1949,11 +1880,9 @@ Individual windows can be configured to have different logos either using the
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 window_logo_position bottom\-right
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -1967,11 +1896,9 @@ Where to position the window logo in the window. The value can be one of:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 window_logo_alpha 0.5
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -1979,42 +1906,49 @@ The amount the logo should be faded into the background. With zero being fully
 faded and one being fully opaque.
 .INDENT 0.0
 .TP
+.B window_logo_scale
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.EX
+window_logo_scale 0
+.EE
+.UNINDENT
+.UNINDENT
+.sp
+The percentage (0\-100] of the window size to which the logo should scale. Using a single
+number means the logo is scaled to that percentage of the shortest window dimension, while preseving
+aspect ratio of the logo image.
+.sp
+Using two numbers means the width and height of the logo are scaled to the respective
+percentage of the window\(aqs width and height.
+.sp
+Using zero as the percentage disables scaling in that dimension. A single zero (the default)
+disables all scaling of the window logo.
+.INDENT 0.0
+.TP
 .B resize_debounce_time
 .UNINDENT
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
-resize_debounce_time 0.1
-.ft P
-.fi
+.EX
+resize_debounce_time 0.1 0.5
+.EE
 .UNINDENT
 .UNINDENT
 .sp
-The time to wait before redrawing the screen when a resize event is received (in
-seconds). On platforms such as macOS, where the operating system sends events
-corresponding to the start and end of a resize, this number is ignored.
-.INDENT 0.0
-.TP
-.B resize_draw_strategy
-.UNINDENT
-.INDENT 0.0
-.INDENT 3.5
-.sp
-.nf
-.ft C
-resize_draw_strategy static
-.ft P
-.fi
-.UNINDENT
-.UNINDENT
-.sp
-Choose how kitty draws a window while a resize is in progress. A value of
-\fBstatic\fP means draw the current window contents, mostly unchanged. A value
-of \fBscale\fP means draw the current window contents scaled. A value of
-\fBblank\fP means draw a blank window. A value of \fBsize\fP means show the
-window size in cells.
+The time to wait (in seconds) before asking the program running in kitty to resize and
+redraw the screen during a live resize of the OS window, when no new resize
+events have been received, i.e. when resizing is either paused or finished.
+On platforms such as macOS, where the operating system sends events corresponding
+to the start and end of a live resize, the second number is used for
+redraw\-after\-pause since kitty can distinguish between a pause and end of
+resizing. On such systems the first number is ignored and redraw is immediate
+after end of resize. On other systems only the first number is used so that kitty
+is \(dqready\(dq quickly after the end of resizing, while not also continuously
+redrawing, to save energy.
 .INDENT 0.0
 .TP
 .B resize_in_steps
@@ -2022,11 +1956,9 @@ window size in cells.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 resize_in_steps no
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2042,17 +1974,15 @@ does not currently work on Wayland.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 visual_window_select_characters 1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 The list of characters for visual window selection. For example, for selecting a
 window to focus on with \fI\%ctrl+shift+f7\fP\&. The value should be a series
-of unique numbers or alphabets, case insensitive, from the set \fB[0\-9A\-Z]\fP\&.
+of unique numbers or alphabets, case insensitive, from the set \fB0\-9A\-Z\(ga\-=[];\(aq,./\e\fP\&.
 Specify your preference as a string of characters.
 .INDENT 0.0
 .TP
@@ -2061,24 +1991,23 @@ Specify your preference as a string of characters.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 confirm_os_window_close \-1
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 Ask for confirmation when closing an OS window or a tab with at least this
 number of kitty windows in it by window manager (e.g. clicking the window close
 button or pressing the operating system shortcut to close windows) or by the
-\fI\%close_tab\fP action. A value of zero disables confirmation. This confirmation
+\X'tty: link #action-close_tab'\fI\%close_tab\fP\X'tty: link' action. A value of zero disables confirmation. This confirmation
 also applies to requests to quit the entire application (all OS windows, via the
-\fI\%quit\fP action). Negative values are converted to positive ones, however,
+\X'tty: link #action-quit'\fI\%quit\fP\X'tty: link' action). Negative values are converted to positive ones, however,
 with \fI\%shell_integration\fP enabled, using negative values means windows
 sitting at a shell prompt are not counted, only windows where some command is
 currently running. Note that if you want confirmation when closing individual
-windows, you can map the \fI\%close_window_with_confirmation\fP action.
+windows, you can map the \X'tty: link #action-close_window_with_confirmation'\fI\%close_window_with_confirmation\fP\X'tty: link' action.
+.SH Tab bar
 .INDENT 0.0
 .TP
 .B tab_bar_edge
@@ -2086,11 +2015,9 @@ windows, you can map the \fI\%close_window_with_confirmation\fP action.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 tab_bar_edge bottom
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2102,11 +2029,9 @@ The edge to show the tab bar on, \fBtop\fP or \fBbottom\fP\&.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 tab_bar_margin_width 0.0
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2118,11 +2043,9 @@ The margin to the left and right of the tab bar (in pts).
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 tab_bar_margin_height 0.0 0.0
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2136,11 +2059,9 @@ margin between the tab bar and the contents of the current tab.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 tab_bar_style fade
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2166,12 +2087,12 @@ A user\-supplied Python function called draw_tab is loaded from the file
 \fBtab_bar.py\fP in the kitty config directory. For examples of how to
 write such a function, see the functions named \fBdraw_tab_with_*\fP in
 kitty\(aqs source code: \fBkitty/tab_bar.py\fP\&. See also
-\fI\%this discussion\fP
+\X'tty: link https://github.com/kovidgoyal/kitty/discussions/4447'\fI\%this discussion\fP\X'tty: link'
 for examples from kitty users.
 .TP
 .B \fBhidden\fP
 The tab bar is hidden. If you use this, you might want to create
-a mapping for the \fI\%select_tab\fP action which presents you with a list of
+a mapping for the \X'tty: link #action-select_tab'\fI\%select_tab\fP\X'tty: link' action which presents you with a list of
 tabs and allows for easy switching to a tab.
 .UNINDENT
 .INDENT 0.0
@@ -2181,11 +2102,9 @@ tabs and allows for easy switching to a tab.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 tab_bar_align left
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2198,11 +2117,9 @@ The horizontal alignment of the tab bar, can be one of: \fBleft\fP,
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 tab_bar_min_tabs 2
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2214,11 +2131,9 @@ The minimum number of tabs that must exist before the tab bar is shown.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 tab_switch_strategy previous
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2234,11 +2149,9 @@ default of \fBprevious\fP will switch to the last used tab. A value of
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 tab_fade 0.25 0.5 0.75 1
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2254,11 +2167,9 @@ by adding/removing entries to this list.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 tab_separator \(dq ┇\(dq
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2271,11 +2182,9 @@ The separator between tabs in the tab bar when using \fBseparator\fP as the
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 tab_powerline_style angled
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2289,11 +2198,9 @@ The powerline separator style between tabs in the tab bar when using
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 tab_activity_symbol none
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2308,11 +2215,9 @@ this is rendered.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 tab_title_max_length 0
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2325,11 +2230,9 @@ A value of zero means that no limit is applied.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 tab_title_template \(dq{fmt.fg.red}{bell_symbol}{activity_symbol}{fmt.fg.tab}{title}\(dq
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2344,7 +2247,7 @@ use \fB{sup.index}\fP\&. All data available is:
 The current tab title.
 .TP
 .B \fBindex\fP
-The tab index useable with \fI\%goto_tab N\fP shortcuts.
+The tab index usable with \X'tty: link #action-goto_tab'\fI\%goto_tab N\fP\X'tty: link' shortcuts.
 .TP
 .B \fBlayout_name\fP
 The current layout name.
@@ -2353,7 +2256,7 @@ The current layout name.
 The number of windows in the tab.
 .TP
 .B \fBnum_window_groups\fP
-The number of window groups (not counting overlay windows) in the tab.
+The number of window groups (a window group is a window and all of its overlay windows) in the tab.
 .TP
 .B \fBtab.active_wd\fP
 The working directory of the currently active window in the tab
@@ -2367,6 +2270,9 @@ active window in the tab (expensive, requires syscall). Use
 .TP
 .B \fBmax_title_length\fP
 The maximum title length available.
+.TP
+.B \fBkeyboard_mode\fP
+The name of the current \X'tty: link #modal-mappings'\fI\%keyboard mode\fP\X'tty: link' or the empty string if no keyboard mode is active.
 .UNINDENT
 .sp
 Note that formatting is done by Python\(aqs string formatting machinery, so you can
@@ -2386,11 +2292,9 @@ it.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 active_tab_title_template none
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2403,16 +2307,14 @@ Template to use for active tabs. If not specified falls back to
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 active_tab_foreground   #000
 active_tab_background   #eee
 active_tab_font_style   bold\-italic
 inactive_tab_foreground #444
 inactive_tab_background #999
 inactive_tab_font_style normal
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2424,11 +2326,9 @@ Tab bar colors and styles.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 tab_bar_background none
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2441,17 +2341,16 @@ color.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 tab_bar_margin_color none
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 Color for the tab bar margin area. Defaults to using the terminal background
 color for margins above and below the tab bar. For side margins the default
 color is chosen to match the background color of the neighboring tab.
+.SH Color scheme
 .INDENT 0.0
 .TP
 .B foreground, background
@@ -2459,12 +2358,10 @@ color is chosen to match the background color of the neighboring tab.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 foreground #dddddd
 background #000000
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2476,30 +2373,52 @@ The foreground and background colors.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 background_opacity 1.0
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 The opacity of the background. A number between zero and one, where one is
-opaque and zero is fully transparent. This will only work if supported by the OS
-(for instance, when using a compositor under X11). Note that it only sets the
-background color\(aqs opacity in cells that have the same background color as the
-default terminal background, so that things like the status bar in vim,
+opaque and zero is fully transparent. This will only work if supported by the
+OS (for instance, when using a compositor under X11). Note that it only sets
+the background color\(aqs opacity in cells that have the same background color as
+the default terminal background, so that things like the status bar in vim,
 powerline prompts, etc. still look good. But it means that if you use a color
 theme with a background color in your editor, it will not be rendered as
 transparent. Instead you should change the default background color in your
 kitty config and not use a background color in the editor color scheme. Or use
-the escape codes to set the terminals default colors in a shell script to launch
-your editor. Be aware that using a value less than 1.0 is a (possibly
-significant) performance hit. If you want to dynamically change transparency of
-windows, set \fI\%dynamic_background_opacity\fP to \fByes\fP (this is off by
-default as it has a performance cost). Changing this option when reloading the
-config will only work if \fI\%dynamic_background_opacity\fP was enabled in the
-original config.
+the escape codes to set the terminals default colors in a shell script to
+launch your editor. Be aware that using a value less than 1.0 is a (possibly
+significant) performance hit. When using a low value for this setting, it is
+desirable that you set the \fI\%background\fP color to a color the matches the
+general color of the desktop background, for best text rendering.  If you want
+to dynamically change transparency of windows, set
+\fI\%dynamic_background_opacity\fP to \fByes\fP (this is off by default as it
+has a performance cost). Changing this option when reloading the config will
+only work if \fI\%dynamic_background_opacity\fP was enabled in the original
+config.
+.INDENT 0.0
+.TP
+.B background_blur
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.EX
+background_blur 0
+.EE
+.UNINDENT
+.UNINDENT
+.sp
+Set to a positive value to enable background blur (blurring of the visuals
+behind a transparent window) on platforms that support it. Only takes effect
+when \fI\%background_opacity\fP is less than one. On macOS, this will also
+control the blur radius (amount of blurring). Setting it to too high
+a value will cause severe performance issues and/or rendering artifacts.
+Usually, values up to 64 work well. Note that this might cause performance issues,
+depending on how the platform implements it, so use with care. Currently supported
+on macOS and KDE.
 .INDENT 0.0
 .TP
 .B background_image
@@ -2507,11 +2426,9 @@ original config.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 background_image none
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2523,16 +2440,16 @@ Path to a background image. Must be in PNG format.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 background_image_layout tiled
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 Whether to tile, scale or clamp the background image. The value can be one of
-\fBtiled\fP, \fBmirror\-tiled\fP, \fBscaled\fP, \fBclamped\fP or \fBcentered\fP\&.
+\fBtiled\fP, \fBmirror\-tiled\fP, \fBscaled\fP, \fBclamped\fP, \fBcentered\fP
+or \fBcscaled\fP\&. The \fBscaled\fP and \fBcscaled\fP values scale the image to the
+window size, with \fBcscaled\fP preserving the image aspect ratio.
 .INDENT 0.0
 .TP
 .B background_image_linear
@@ -2540,11 +2457,9 @@ Whether to tile, scale or clamp the background image. The value can be one of
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 background_image_linear no
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2556,11 +2471,9 @@ When background image is scaled, whether linear interpolation should be used.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 dynamic_background_opacity no
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2575,11 +2488,9 @@ this option by reloading the config is not supported.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 background_tint 0.0
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2594,11 +2505,9 @@ set and transparent windows are supported or \fI\%background_image\fP is set.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 background_tint_gaps 1.0
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2613,11 +2522,9 @@ gaps for a \fIseparated\fP look.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
-dim_opacity 0.75
-.ft P
-.fi
+.EX
+dim_opacity 0.4
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2630,12 +2537,10 @@ and zero means fully dimmed (i.e. invisible).
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 selection_foreground #000000
 selection_background #fffacd
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2645,7 +2550,7 @@ selections, where the selection will be the cell text color and the text will
 become the cell background color. Setting only selection_foreground to
 \fBnone\fP will cause the foreground color to be used unchanged. Note that
 these colors can be overridden by the program running in the terminal.
-.SH THE COLOR TABLE
+.SS The color table
 .sp
 The 256 terminal colors. There are 8 basic colors, each color has a dull and
 bright version, for the first 16 colors. You can set the remaining 240 colors as
@@ -2657,12 +2562,10 @@ color16 to color255.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 color0 #000000
 color8 #767676
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2674,12 +2577,10 @@ black
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 color1 #cc0403
 color9 #f2201f
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2691,12 +2592,10 @@ red
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 color2  #19cb00
 color10 #23fd00
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2708,12 +2607,10 @@ green
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 color3  #cecb00
 color11 #fffd00
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2725,12 +2622,10 @@ yellow
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 color4  #0d73cc
 color12 #1a8fff
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2742,12 +2637,10 @@ blue
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 color5  #cb1ed1
 color13 #fd28ff
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2759,12 +2652,10 @@ magenta
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 color6  #0dcdcd
 color14 #14ffff
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2776,12 +2667,10 @@ cyan
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 color7  #dddddd
 color15 #ffffff
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2793,11 +2682,9 @@ white
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 mark1_foreground black
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2809,11 +2696,9 @@ Color for marks of type 1
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 mark1_background #98d3cb
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2825,11 +2710,9 @@ Color for marks of type 1 (light steel blue)
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 mark2_foreground black
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2841,11 +2724,9 @@ Color for marks of type 2
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 mark2_background #f2dcd3
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2857,11 +2738,9 @@ Color for marks of type 1 (beige)
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 mark3_foreground black
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2873,15 +2752,14 @@ Color for marks of type 3
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 mark3_background #f274bc
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 Color for marks of type 3 (violet)
+.SH Advanced
 .INDENT 0.0
 .TP
 .B shell
@@ -2889,11 +2767,9 @@ Color for marks of type 3 (violet)
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 shell .
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2901,7 +2777,7 @@ The shell program to execute. The default value of \fB\&.\fP means to use
 whatever shell is set as the default shell for the current user. Note that on
 macOS if you change this, you might need to add \fB\-\-login\fP and
 \fB\-\-interactive\fP to ensure that the shell starts in interactive mode and
-reads its startup rc files.
+reads its startup rc files. Environment variables are expanded in this setting.
 .INDENT 0.0
 .TP
 .B editor
@@ -2909,11 +2785,9 @@ reads its startup rc files.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 editor .
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2921,9 +2795,9 @@ The terminal based text editor (such as \fBvim\fP or \fBnano\fP) to
 use when editing the kitty config file or similar tasks.
 .sp
 The default value of \fB\&.\fP means to use the environment variables
-\fI\%VISUAL\fP and \fI\%EDITOR\fP in that order. If these variables aren\(aqt
+\X'tty: link #envvar-VISUAL'\fI\%VISUAL\fP\X'tty: link' and \X'tty: link #envvar-EDITOR'\fI\%EDITOR\fP\X'tty: link' in that order. If these variables aren\(aqt
 set, kitty will run your \fI\%shell\fP (\fB$SHELL \-l \-i \-c env\fP) to see if
-your shell startup rc files set \fI\%VISUAL\fP or \fI\%EDITOR\fP\&. If that
+your shell startup rc files set \X'tty: link #envvar-VISUAL'\fI\%VISUAL\fP\X'tty: link' or \X'tty: link #envvar-EDITOR'\fI\%EDITOR\fP\X'tty: link'\&. If that
 doesn\(aqt work, kitty will cycle through various known editors (\fBvim\fP,
 \fBemacs\fP, etc.) and take the first one that exists on your system.
 .INDENT 0.0
@@ -2933,17 +2807,15 @@ doesn\(aqt work, kitty will cycle through various known editors (\fBvim\fP,
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 close_on_child_death no
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
-Close the window when the child process (shell) exits. With the default value
+Close the window when the child process (usually the shell) exits. With the default value
 \fBno\fP, the terminal will remain open when the child exits as long as there
-are still processes outputting to the terminal (for example disowned or
+are still other processes outputting to the terminal (for example disowned or
 backgrounded processes). When enabled with \fByes\fP, the window will close as
 soon as the child process exits. Note that setting it to \fByes\fP means that
 any background processes still using the terminal can fail silently because
@@ -2961,11 +2833,9 @@ allowed remote control actions. For example:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 remote_control_password \(dqmy passphrase\(dq get\-colors set\-colors focus\-window focus\-tab
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2974,11 +2844,9 @@ Glob patterns can be used too, for example:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 remote_control_password \(dqmy passphrase\(dq set\-tab\-* resize\-*
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2986,11 +2854,9 @@ To get a list of available actions, run:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
-kitty @ \-\-help
-.ft P
-.fi
+.EX
+kitten @ \-\-help
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -2999,11 +2865,9 @@ using an empty password. For example:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 remote_control_password \(dq\(dq *\-colors
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -3013,16 +2877,14 @@ For example:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 remote_control_password \(dqmy passphrase\(dq my_rc_command_checker.py
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 Relative paths are resolved from the kitty configuration directory.
-See \fI\%Customizing authorization with your own program\fP for details.
+See \X'tty: link #rc-custom-auth'\fI\%Customizing authorization with your own program\fP\X'tty: link' for details.
 .INDENT 0.0
 .TP
 .B allow_remote_control
@@ -3030,11 +2892,9 @@ See \fI\%Customizing authorization with your own program\fP for details.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 allow_remote_control no
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -3072,26 +2932,24 @@ Remote control requests are always accepted.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 listen_on none
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
-Listen to the specified UNIX socket for remote control connections. Note that
-this will apply to all kitty instances. It can be overridden by the
-\fI\%kitty \-\-listen\-on\fP command line option, which also supports listening
-on a TCP socket. This option accepts only UNIX sockets, such as
+Listen to the specified socket for remote control connections. Note that this
+will apply to all kitty instances. It can be overridden by the \X'tty: link #cmdoption-kitty-listen-on'\fI\%kitty
+\-\-listen\-on\fP\X'tty: link' command line option. For UNIX sockets, such as
 \fBunix:${TEMP}/mykitty\fP or \fBunix:@mykitty\fP (on Linux). Environment
 variables are expanded and relative paths are resolved with respect to the
 temporary directory. If \fB{kitty_pid}\fP is present, then it is replaced by
 the PID of the kitty process, otherwise the PID of the kitty process is
-appended to the value, with a hyphen. See the help for \fI\%kitty
-\-\-listen\-on\fP for more details. Note that this will be ignored unless
-\fI\%allow_remote_control\fP is set to either: \fByes\fP, \fBsocket\fP or
-\fBsocket\-only\fP\&.
+appended to the value, with a hyphen. For TCP sockets such as
+\fBtcp:localhost:0\fP a random port is always used even if a non\-zero port
+number is specified.  See the help for \X'tty: link #cmdoption-kitty-listen-on'\fI\%kitty \-\-listen\-on\fP\X'tty: link' for more
+details. Note that this will be ignored unless \fI\%allow_remote_control\fP is
+set to either: \fByes\fP, \fBsocket\fP or \fBsocket\-only\fP\&.
 Changing this option by reloading the config is not supported.
 .INDENT 0.0
 .TP
@@ -3106,12 +2964,10 @@ recursively, for example:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 env VAR1=a
 env VAR2=${HOME}/${VAR1}/b
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -3121,7 +2977,7 @@ The value of \fBVAR2\fP will be \fB<path to home directory>/a/b\fP\&.
 .B watcher
 .UNINDENT
 .sp
-Path to python file which will be loaded for \fI\%Watching launched windows\fP\&. Can be specified
+Path to python file which will be loaded for \X'tty: link #watchers'\fI\%Watching launched windows\fP\X'tty: link'\&. Can be specified
 more than once to load multiple watchers. The watchers will be added to every
 kitty window. Relative paths are resolved relative to the kitty config
 directory. Note that reloading the config will only affect windows created after
@@ -3146,13 +3002,11 @@ For example:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 exe_search_path /some/prepended/path
 exe_search_path +/some/appended/path
 exe_search_path \-/some/excluded/path
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -3162,11 +3016,9 @@ exe_search_path \-/some/excluded/path
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 update_check_interval 24
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -3183,20 +3035,19 @@ reloading the config is not supported.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 startup_session none
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 Path to a session file to use for all kitty instances. Can be overridden by
-using the \fI\%kitty \-\-session\fP \fB=none\fP command line option for individual
-instances. See \fI\%Startup Sessions\fP in the kitty documentation for details. Note that
+using the \X'tty: link #cmdoption-kitty-session'\fI\%kitty \-\-session\fP\X'tty: link' \fB=none\fP command line option for individual
+instances. See \X'tty: link #sessions'\fI\%Startup Sessions\fP\X'tty: link' in the kitty documentation for details. Note that
 relative paths are interpreted with respect to the kitty config directory.
 Environment variables in the path are expanded. Changing this option by
-reloading the config is not supported.
+reloading the config is not supported. Note that if kitty is invoked with command line
+arguments specifying a command to run, this option is ignored.
 .INDENT 0.0
 .TP
 .B clipboard_control
@@ -3204,11 +3055,9 @@ reloading the config is not supported.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 clipboard_control write\-clipboard write\-primary read\-clipboard\-ask read\-primary\-ask
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -3228,11 +3077,9 @@ also \fI\%clipboard_max_size\fP\&.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 clipboard_max_size 512
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -3255,15 +3102,13 @@ to read/write to the local filesystem, without permission.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 allow_hyperlinks yes
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
-Process \fI\%hyperlink\fP escape sequences (OSC 8). If disabled OSC
+Process \X'tty: link #term-hyperlinks'\fI\%hyperlink\fP\X'tty: link' escape sequences (OSC 8). If disabled OSC
 8 escape sequences are ignored. Otherwise they become clickable links, that you
 can click with the mouse or by using the \fI\%hints kitten\fP\&.
 The special value of \fBask\fP means that kitty will ask before opening the
@@ -3275,11 +3120,9 @@ link when clicked.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 shell_integration enabled
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -3288,8 +3131,8 @@ jumping to previous prompts, browsing the output of the previous command in a
 pager, etc. on supported shells. Set to \fBdisabled\fP to turn off shell
 integration, completely. It is also possible to disable individual features, set
 to a space separated list of these values: \fBno\-rc\fP, \fBno\-cursor\fP,
-\fBno\-title\fP, \fBno\-cwd\fP, \fBno\-prompt\-mark\fP, \fBno\-complete\fP\&.
-See \fI\%Shell integration\fP for details.
+\fBno\-title\fP, \fBno\-cwd\fP, \fBno\-prompt\-mark\fP, \fBno\-complete\fP, \fBno\-sudo\fP\&.
+See \X'tty: link #shell-integration'\fI\%Shell integration\fP\X'tty: link' for details.
 .INDENT 0.0
 .TP
 .B allow_cloning
@@ -3297,16 +3140,14 @@ See \fI\%Shell integration\fP for details.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 allow_cloning ask
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 Control whether programs running in the terminal can request new windows to be
-created. The canonical example is \fI\%clone\-in\-kitty\fP\&. By
+created. The canonical example is \X'tty: link #clone-shell'\fI\%clone\-in\-kitty\fP\X'tty: link'\&. By
 default, kitty will ask for permission for each clone request. Allowing cloning
 unconditionally gives programs running in the terminal (including over SSH)
 permission to execute arbitrary code, as the user who is running the terminal,
@@ -3318,11 +3159,9 @@ on the computer that the terminal is running on.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 clone_source_strategies venv,conda,env_var,path
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -3340,15 +3179,86 @@ environments created by \fBconda\fP\&.
 .TP
 .B \fBenv_var\fP
 Execute the contents of the environment variable
-\fI\%KITTY_CLONE_SOURCE_CODE\fP with \fBeval\fP\&.
+\X'tty: link #envvar-KITTY_CLONE_SOURCE_CODE'\fI\%KITTY_CLONE_SOURCE_CODE\fP\X'tty: link' with \fBeval\fP\&.
 .TP
 .B \fBpath\fP
 Source the file pointed to by the environment variable
-\fI\%KITTY_CLONE_SOURCE_PATH\fP\&.
+\X'tty: link #envvar-KITTY_CLONE_SOURCE_PATH'\fI\%KITTY_CLONE_SOURCE_PATH\fP\X'tty: link'\&.
 .UNINDENT
 .sp
-This option must be a comma separated list of the above values. This only
-source the first valid one in the above order.
+This option must be a comma separated list of the above values. Only the
+first valid match, in the order specified, is sourced.
+.INDENT 0.0
+.TP
+.B notify_on_cmd_finish
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.EX
+notify_on_cmd_finish never
+.EE
+.UNINDENT
+.UNINDENT
+.sp
+Show a desktop notification when a long\-running command finishes
+(needs \fI\%shell_integration\fP).
+The possible values are:
+.INDENT 0.0
+.TP
+.B \fBnever\fP
+Never send a notification.
+.TP
+.B \fBunfocused\fP
+Only send a notification when the window does not have keyboard focus.
+.TP
+.B \fBinvisible\fP
+Only send a notification when the window both is unfocused and not visible
+to the user, for example, because it is in an inactive tab or its OS window
+is not currently active.
+.TP
+.B \fBalways\fP
+Always send a notification, regardless of window state.
+.UNINDENT
+.sp
+There are two optional arguments:
+.sp
+First, the minimum duration for what is considered a
+long running command. The default is 5 seconds. Specify a second argument
+to set the duration. For example: \fBinvisible 15\fP\&.
+Do not set the value too small, otherwise a command that launches a new OS Window
+and exits will spam a notification.
+.sp
+Second, the action to perform. The default is \fBnotify\fP\&. The possible values are:
+.INDENT 0.0
+.TP
+.B \fBnotify\fP
+Send a desktop notification.
+.TP
+.B \fBbell\fP
+Ring the terminal bell.
+.TP
+.B \fBcommand\fP
+Run a custom command. All subsequent arguments are the cmdline to run.
+.UNINDENT
+.sp
+Some more examples:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.EX
+# Send a notification when a command takes more than 5 seconds in an unfocused window
+notify_on_cmd_finish unfocused
+# Send a notification when a command takes more than 10 seconds in a invisible window
+notify_on_cmd_finish invisible 10.0
+# Ring a bell when a command takes more than 10 seconds in a invisible window
+notify_on_cmd_finish invisible 10.0 bell
+# Run \(aqnotify\-send\(aq when a command takes more than 10 seconds in a invisible window
+# Here %c is replaced by the current command line and %s by the job exit code
+notify_on_cmd_finish invisible 10.0 command notify\-send \(dqjob finished with status: %s\(dq %c
+.EE
+.UNINDENT
+.UNINDENT
 .INDENT 0.0
 .TP
 .B term
@@ -3356,18 +3266,16 @@ source the first valid one in the above order.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 term xterm\-kitty
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
-The value of the \fI\%TERM\fP environment variable to set. Changing this can
+The value of the \X'tty: link #envvar-TERM'\fI\%TERM\fP\X'tty: link' environment variable to set. Changing this can
 break many terminal programs, only change it if you know what you are doing, not
 because you read some advice on \(dqStack Overflow\(dq to change it. The
-\fI\%TERM\fP variable is used by various programs to get information about the
+\X'tty: link #envvar-TERM'\fI\%TERM\fP\X'tty: link' variable is used by various programs to get information about the
 capabilities and behavior of the terminal. If you change it, depending on what
 programs you run, and how different the terminal you are changing it to is,
 various things from key\-presses, to colors, to various advanced features may not
@@ -3375,23 +3283,78 @@ work. Changing this option by reloading the config will only affect newly
 created windows.
 .INDENT 0.0
 .TP
+.B terminfo_type
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.EX
+terminfo_type path
+.EE
+.UNINDENT
+.UNINDENT
+.sp
+The value of the \X'tty: link #envvar-TERMINFO'\fI\%TERMINFO\fP\X'tty: link' environment variable to set. This variable is
+used by programs running in the terminal to search for terminfo databases. The default value
+of \fBpath\fP causes kitty to set it to a filesystem location containing the
+kitty terminfo database. A value of \fBdirect\fP means put the entire database into
+the env var directly. This can be useful when connecting to containers, for example. But,
+note that not all software supports this. A value of \fBnone\fP means do not touch the variable.
+.INDENT 0.0
+.TP
+.B forward_stdio
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.EX
+forward_stdio no
+.EE
+.UNINDENT
+.UNINDENT
+.sp
+Forward STDOUT and STDERR of the kitty process to child processes
+as file descriptors 3 and 4. This is useful for debugging as it
+allows child processes to print to kitty\(aqs STDOUT directly. For example,
+\fBecho hello world >&3\fP in a shell will print to the parent kitty\(aqs
+STDOUT. When enabled, this also sets the \fBKITTY_STDIO_FORWARDED=3\fP
+environment variable so child processes know about the forwarding.
+.INDENT 0.0
+.TP
+.B menu_map
+.UNINDENT
+.sp
+Specify entries for various menus in kitty. Currently only the global menubar on macOS
+is supported. For example:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.EX
+menu_map global \(dqActions::Launch something special\(dq launch \-\-hold \-\-type=os\-window sh \-c \(dqecho hello world\(dq
+.EE
+.UNINDENT
+.UNINDENT
+.sp
+This will create a menu entry named \(dqLaunch something special\(dq in an \(dqActions\(dq menu in the macOS global menubar.
+Sub\-menus can be created by adding more levels separated by the \fB::\fP characters.
+.SH Os specific tweaks
+.INDENT 0.0
+.TP
 .B wayland_titlebar_color
 .UNINDENT
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 wayland_titlebar_color system
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 The color of the kitty window\(aqs titlebar on Wayland systems with client
 side window decorations such as GNOME. A value of \fBsystem\fP means to use
-the default system color, a value of \fBbackground\fP means to use the
-background color of the currently active window and finally you can use an
+the default system colors, a value of \fBbackground\fP means to use the
+background color of the currently active kitty window and finally you can use an
 arbitrary color, such as \fB#12af59\fP or \fBred\fP\&.
 .INDENT 0.0
 .TP
@@ -3400,11 +3363,9 @@ arbitrary color, such as \fB#12af59\fP or \fBred\fP\&.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 macos_titlebar_color system
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -3426,11 +3387,9 @@ want to use both, you are probably better off just hiding the titlebar with
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 macos_option_as_alt no
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -3453,11 +3412,9 @@ not supported.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 macos_hide_from_tasks no
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -3470,11 +3427,9 @@ Changing this option by reloading the config is not supported.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 macos_quit_when_last_window_closed no
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -3488,17 +3443,14 @@ on macOS.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 macos_window_resizable yes
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 Disable this if you want kitty top\-level OS windows to not be resizable on
-macOS. Changing this option by reloading the config will only affect newly
-created OS windows.
+macOS.
 .INDENT 0.0
 .TP
 .B macos_thicken_font
@@ -3506,11 +3458,9 @@ created OS windows.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 macos_thicken_font 0
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -3526,11 +3476,9 @@ supported). Consider using \fI\%text_composition_strategy\fP instead.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 macos_traditional_fullscreen no
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -3543,11 +3491,9 @@ pretty.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 macos_show_window_title_in all
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -3565,11 +3511,9 @@ length of the title in the menu bar.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 macos_menubar_title_max_length 0
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -3582,11 +3526,9 @@ global menu bar. Values less than one means that there is no maximum limit.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 macos_custom_beam_cursor no
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -3601,11 +3543,9 @@ dual GPU machines. Changing this option by reloading the config is not supported
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 macos_colorspace srgb
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -3623,11 +3563,9 @@ created OS windows.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 linux_display_server auto
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -3635,126 +3573,50 @@ Choose between Wayland and X11 backends. By default, an appropriate backend
 based on the system state is chosen automatically. Set it to \fBx11\fP or
 \fBwayland\fP to force the choice. Changing this option by reloading the
 config is not supported.
+.INDENT 0.0
+.TP
+.B wayland_enable_ime
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.EX
+wayland_enable_ime yes
+.EE
+.UNINDENT
+.UNINDENT
+.sp
+Enable Input Method Extension on Wayland. This is typically used for
+inputting text in East Asian languages. However, its implementation in
+Wayland is often buggy and introduces latency into the input loop,
+so disable this if you know you dont need it. Changing this option
+by reloading the config is not supported, it will not have any effect.
+.SH Keyboard shortcuts
 .sp
 Keys are identified simply by their lowercase Unicode characters. For example:
 \fBa\fP for the \fBA\fP key, \fB[\fP for the left square bracket key, etc.
 For functional keys, such as \fBEnter\fP or \fBEscape\fP, the names are present
-at \fI\%Functional key definitions\fP\&. For modifier keys, the names
+at \X'tty: link #functional'\fI\%Functional key definitions\fP\X'tty: link'\&. For modifier keys, the names
 are \fBctrl\fP (\fBcontrol\fP, \fB⌃\fP), \fBshift\fP (\fB⇧\fP), \fBalt\fP
 (\fBopt\fP, \fBoption\fP, \fB⌥\fP), \fBsuper\fP (\fBcmd\fP, \fBcommand\fP,
 \fB⌘\fP).
-See also: \fI\%GLFW mods\fP
 .sp
-On Linux you can also use XKB key names to bind keys that are not supported by
-GLFW. See \fI\%XKB keys\fP
-for a list of key names. The name to use is the part after the \fBXKB_KEY_\fP
-prefix. Note that you can only use an XKB key name for keys that are not known
-as GLFW keys.
-.sp
-Finally, you can use raw system key codes to map keys, again only for keys that
-are not known as GLFW keys. To see the system key code for a key, start kitty
-with the \fI\%kitty \-\-debug\-input\fP option, kitty will output some debug text
-for every key event. In that text look for \fBnative_code\fP, the value
-of that becomes the key name in the shortcut. For example:
+Simple shortcut mapping is done with the \fBmap\fP directive. For full details
+on advanced mapping including modal and per application maps, see \fI\%Making your keyboard dance\fP\&.
+Some quick examples to illustrate common tasks:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
-on_key_input: glfw key: 0x61 native_code: 0x61 action: PRESS mods: none text: \(aqa\(aq
-.ft P
-.fi
-.UNINDENT
-.UNINDENT
-.sp
-Here, the key name for the \fBA\fP key is \fB0x61\fP and you can use it with:
-.INDENT 0.0
-.INDENT 3.5
-.sp
-.nf
-.ft C
-map ctrl+0x61 something
-.ft P
-.fi
-.UNINDENT
-.UNINDENT
-.sp
-to map \fBCtrl+A\fP to something.
-.sp
-You can use the special action \fI\%no_op\fP to unmap a keyboard shortcut that is
-assigned in the default configuration:
-.INDENT 0.0
-.INDENT 3.5
-.sp
-.nf
-.ft C
-map kitty_mod+space no_op
-.ft P
-.fi
-.UNINDENT
-.UNINDENT
-.sp
-If you would like kitty to completely ignore a key event, not even sending it to
-the program running in the terminal, map it to \fI\%discard_event\fP:
-.INDENT 0.0
-.INDENT 3.5
-.sp
-.nf
-.ft C
-map kitty_mod+f1 discard_event
-.ft P
-.fi
-.UNINDENT
-.UNINDENT
-.sp
-You can combine multiple actions to be triggered by a single shortcut with
-\fI\%combine\fP action, using the syntax below:
-.INDENT 0.0
-.INDENT 3.5
-.sp
-.nf
-.ft C
-map key combine <separator> action1 <separator> action2 <separator> action3 ...
-.ft P
-.fi
-.UNINDENT
-.UNINDENT
-.sp
-For example:
-.INDENT 0.0
-.INDENT 3.5
-.sp
-.nf
-.ft C
+.EX
+# unmap a keyboard shortcut, passing it to the program running in kitty
+map kitty_mod+space
+# completely ignore a keyboard event
+map ctrl+alt+f1 discard_event
+# combine multiple actions
 map kitty_mod+e combine : new_window : next_layout
-.ft P
-.fi
-.UNINDENT
-.UNINDENT
-.sp
-This will create a new window and switch to the next available layout.
-.sp
-You can use multi\-key shortcuts with the syntax shown below:
-.INDENT 0.0
-.INDENT 3.5
-.sp
-.nf
-.ft C
-map key1>key2>key3 action
-.ft P
-.fi
-.UNINDENT
-.UNINDENT
-.sp
-For example:
-.INDENT 0.0
-.INDENT 3.5
-.sp
-.nf
-.ft C
-map ctrl+f>2 set_font_size 20
-.ft P
-.fi
+# multi\-key shortcuts
+map ctrl+x>ctrl+y>z action
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -3767,11 +3629,9 @@ The full list of actions that can be mapped to key presses is available
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 kitty_mod ctrl+shift
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -3784,11 +3644,9 @@ this option to alter all default shortcuts that use \fI\%kitty_mod\fP\&.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 clear_all_shortcuts no
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -3803,11 +3661,9 @@ Has no default values. Example values are shown below:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 action_alias launch_tab launch \-\-type=tab \-\-cwd=current
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -3818,12 +3674,10 @@ the current working directory without duplication:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map f1 launch_tab vim
 map f2 launch_tab emacs
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -3831,11 +3685,9 @@ Similarly, to alias kitten invocation:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 action_alias hints kitten hints \-\-hints\-offset=0
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -3847,11 +3699,9 @@ Has no default values. Example values are shown below:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 kitten_alias hints hints \-\-hints\-offset=0
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -3859,9 +3709,9 @@ Like \fI\%action_alias\fP above, but specifically for kittens. Generally, prefer
 to use \fI\%action_alias\fP\&. This option is a legacy version, present for
 backwards compatibility. It causes all invocations of the aliased kitten to be
 substituted. So the example above will cause all invocations of the hints kitten
-to have the \fI\%\-\-hints\-offset=0\fP
+to have the \X'tty: link #cmdoption-kitty-kitten-hints-hints-offset'\fI\%\-\-hints\-offset=0\fP\X'tty: link'
 option applied.
-.SH CLIPBOARD
+.SS Clipboard
 .INDENT 0.0
 .TP
 .B Copy to clipboard
@@ -3869,18 +3719,16 @@ option applied.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+c copy_to_clipboard
 map cmd+c copy_to_clipboard 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
-There is also a \fI\%copy_or_interrupt\fP action that can be optionally mapped
+There is also a \X'tty: link #action-copy_or_interrupt'\fI\%copy_or_interrupt\fP\X'tty: link' action that can be optionally mapped
 to \fBCtrl+C\fP\&. It will copy only if there is a selection and send an
-interrupt otherwise. Similarly, \fI\%copy_and_clear_or_interrupt\fP will copy
+interrupt otherwise. Similarly, \X'tty: link #action-copy_and_clear_or_interrupt'\fI\%copy_and_clear_or_interrupt\fP\X'tty: link' will copy
 and clear the selection or send an interrupt if there is no selection.
 .INDENT 0.0
 .TP
@@ -3889,12 +3737,10 @@ and clear the selection or send an interrupt if there is no selection.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+v paste_from_clipboard
 map cmd+v paste_from_clipboard 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -3904,12 +3750,10 @@ map cmd+v paste_from_clipboard 🍎
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+s paste_from_selection
 map shift+insert paste_from_selection
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -3919,26 +3763,22 @@ map shift+insert paste_from_selection
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+o pass_selection_to_program
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 You can also pass the contents of the current selection to any program with
-\fI\%pass_selection_to_program\fP\&. By default, the system\(aqs open program is used,
+\X'tty: link #action-pass_selection_to_program'\fI\%pass_selection_to_program\fP\X'tty: link'\&. By default, the system\(aqs open program is used,
 but you can specify your own, the selection will be passed as a command line
 argument to the program. For example:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map kitty_mod+o pass_selection_to_program firefox
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -3947,14 +3787,12 @@ window, by using the \fB@selection\fP placeholder:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map kitty_mod+y new_window less @selection
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
-.SH SCROLLING
+.SS Scrolling
 .INDENT 0.0
 .TP
 .B Scroll line up
@@ -3962,14 +3800,12 @@ map kitty_mod+y new_window less @selection
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+up scroll_line_up
 map ctrl+shift+k scroll_line_up
 map opt+cmd+page_up scroll_line_up 🍎
 map cmd+up scroll_line_up 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -3979,14 +3815,12 @@ map cmd+up scroll_line_up 🍎
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+down scroll_line_down
 map ctrl+shift+j scroll_line_down
 map opt+cmd+page_down scroll_line_down 🍎
 map cmd+down scroll_line_down 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -3996,12 +3830,10 @@ map cmd+down scroll_line_down 🍎
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+page_up scroll_page_up
 map cmd+page_up scroll_page_up 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -4011,12 +3843,10 @@ map cmd+page_up scroll_page_up 🍎
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+page_down scroll_page_down
 map cmd+page_down scroll_page_down 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -4026,12 +3856,10 @@ map cmd+page_down scroll_page_down 🍎
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+home scroll_home
 map cmd+home scroll_home 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -4041,12 +3869,10 @@ map cmd+home scroll_home 🍎
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+end scroll_end
 map cmd+end scroll_end 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -4056,16 +3882,14 @@ map cmd+end scroll_end 🍎
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+z scroll_to_prompt \-1
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
-Use a parameter of \fB0\fP for \fI\%scroll_to_prompt\fP to scroll to the last
-jumped to or the last clicked position. Requires \fI\%shell integration\fP to work.
+Use a parameter of \fB0\fP for \X'tty: link #action-scroll_to_prompt'\fI\%scroll_to_prompt\fP\X'tty: link' to scroll to the last
+jumped to or the last clicked position. Requires \X'tty: link #shell-integration'\fI\%shell integration\fP\X'tty: link' to work.
 .INDENT 0.0
 .TP
 .B Scroll to next shell prompt
@@ -4073,11 +3897,9 @@ jumped to or the last clicked position. Requires \fI\%shell integration\fP to wo
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+x scroll_to_prompt 1
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -4087,26 +3909,22 @@ map ctrl+shift+x scroll_to_prompt 1
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+h show_scrollback
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 You can pipe the contents of the current screen and history buffer as
-\fBSTDIN\fP to an arbitrary program using \fI\%launch \-\-stdin\-source\fP\&.
+\fBSTDIN\fP to an arbitrary program using \X'tty: link #cmdoption-launch-stdin-source'\fI\%launch \-\-stdin\-source\fP\X'tty: link'\&.
 For example, the following opens the scrollback buffer in less in an
-\fI\%overlay\fP window:
+\X'tty: link #term-overlay'\fI\%overlay\fP\X'tty: link' window:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map f1 launch \-\-stdin\-source=@screen_scrollback \-\-stdin\-add\-formatting \-\-type=overlay less +G \-R
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -4119,11 +3937,9 @@ see \fI\%The launch command\fP\&.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+g show_last_command_output
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -4132,11 +3948,9 @@ For example, to get the first command output on screen:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map f1 show_first_command_output_on_screen
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -4145,33 +3959,29 @@ action:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map f1 show_last_visited_command_output
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 You can pipe the output of the last command run in the shell using the
-\fI\%launch\fP action. For example, the following opens the output in less in an
-\fI\%overlay\fP window:
+\X'tty: link #action-launch'\fI\%launch\fP\X'tty: link' action. For example, the following opens the output in less in an
+\X'tty: link #term-overlay'\fI\%overlay\fP\X'tty: link' window:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map f1 launch \-\-stdin\-source=@last_cmd_output \-\-stdin\-add\-formatting \-\-type=overlay less +G \-R
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 To get the output of the first command on the screen, use \fB@first_cmd_output_on_screen\fP\&.
 To get the output of the last jumped to command, use \fB@last_visited_cmd_output\fP\&.
 .sp
-Requires \fI\%shell integration\fP to work.
-.SH WINDOW MANAGEMENT
+Requires \X'tty: link #shell-integration'\fI\%shell integration\fP\X'tty: link' to work.
+.SS Window management
 .INDENT 0.0
 .TP
 .B New window
@@ -4179,25 +3989,21 @@ Requires \fI\%shell integration\fP to work.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+enter new_window
 map cmd+enter new_window 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
-You can open a new \fI\%kitty window\fP running an arbitrary program,
+You can open a new \X'tty: link #term-window'\fI\%kitty window\fP\X'tty: link' running an arbitrary program,
 for example:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map kitty_mod+y launch mutt
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -4206,26 +4012,22 @@ directory of the current window using:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+alt+enter launch \-\-cwd=current
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 You can open a new window that is allowed to control kitty via
-the kitty remote control facility with \fI\%launch \-\-allow\-remote\-control\fP\&.
+the kitty remote control facility with \X'tty: link #cmdoption-launch-allow-remote-control'\fI\%launch \-\-allow\-remote\-control\fP\X'tty: link'\&.
 Any programs running in that window will be allowed to control kitty.
 For example:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+enter launch \-\-allow\-remote\-control some_program
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -4234,12 +4036,10 @@ window, with:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+n launch \-\-location=neighbor
 map ctrl+f launch \-\-location=first
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -4251,17 +4051,15 @@ For more details, see \fI\%The launch command\fP\&.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+n new_os_window
 map cmd+n new_os_window 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
-Works like \fI\%new_window\fP above, except that it opens a top\-level \fI\%OS
-window\fP\&. In particular you can use \fI\%new_os_window_with_cwd\fP to
+Works like \X'tty: link #action-new_window'\fI\%new_window\fP\X'tty: link' above, except that it opens a top\-level \X'tty: link #term-os_window'\fI\%OS
+window\fP\X'tty: link'\&. In particular you can use \X'tty: link #action-new_os_window_with_cwd'\fI\%new_os_window_with_cwd\fP\X'tty: link' to
 open a window with the current working directory.
 .INDENT 0.0
 .TP
@@ -4270,12 +4068,10 @@ open a window with the current working directory.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+w close_window
 map shift+cmd+d close_window 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -4285,11 +4081,9 @@ map shift+cmd+d close_window 🍎
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+] next_window
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -4299,11 +4093,9 @@ map ctrl+shift+] next_window
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+[ previous_window
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -4313,11 +4105,9 @@ map ctrl+shift+[ previous_window
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+f move_window_forward
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -4327,11 +4117,9 @@ map ctrl+shift+f move_window_forward
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+b move_window_backward
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -4341,11 +4129,9 @@ map ctrl+shift+b move_window_backward
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+\(ga move_window_to_top
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -4355,12 +4141,10 @@ map ctrl+shift+\(ga move_window_to_top
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+r start_resizing_window
 map cmd+r start_resizing_window 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -4370,12 +4154,10 @@ map cmd+r start_resizing_window 🍎
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+1 first_window
 map cmd+1 first_window 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -4385,12 +4167,10 @@ map cmd+1 first_window 🍎
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+2 second_window
 map cmd+2 second_window 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -4400,12 +4180,10 @@ map cmd+2 second_window 🍎
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+3 third_window
 map cmd+3 third_window 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -4415,12 +4193,10 @@ map cmd+3 third_window 🍎
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+4 fourth_window
 map cmd+4 fourth_window 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -4430,12 +4206,10 @@ map cmd+4 fourth_window 🍎
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+5 fifth_window
 map cmd+5 fifth_window 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -4445,12 +4219,10 @@ map cmd+5 fifth_window 🍎
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+6 sixth_window
 map cmd+6 sixth_window 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -4460,27 +4232,23 @@ map cmd+6 sixth_window 🍎
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+7 seventh_window
 map cmd+7 seventh_window 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
 .TP
-.B Eight window
+.B Eighth window
 .UNINDENT
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+8 eighth_window
 map cmd+8 eighth_window 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -4490,12 +4258,10 @@ map cmd+8 eighth_window 🍎
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+9 ninth_window
 map cmd+9 ninth_window 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -4505,11 +4271,9 @@ map cmd+9 ninth_window 🍎
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+0 tenth_window
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -4519,11 +4283,9 @@ map ctrl+shift+0 tenth_window
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+f7 focus_visible_window
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -4538,16 +4300,14 @@ characters and their order with option \fI\%visual_window_select_characters\fP\&
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+f8 swap_with_window
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
-Works like \fI\%focus_visible_window\fP above, but swaps the window.
-.SH TAB MANAGEMENT
+Works like \X'tty: link #action-focus_visible_window'\fI\%focus_visible_window\fP\X'tty: link' above, but swaps the window.
+.SS Tab management
 .INDENT 0.0
 .TP
 .B Next tab
@@ -4555,13 +4315,11 @@ Works like \fI\%focus_visible_window\fP above, but swaps the window.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+right next_tab
 map shift+cmd+] next_tab 🍎
 map ctrl+tab next_tab
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -4571,13 +4329,11 @@ map ctrl+tab next_tab
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+left previous_tab
 map shift+cmd+[ previous_tab 🍎
 map ctrl+shift+tab previous_tab
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -4587,12 +4343,10 @@ map ctrl+shift+tab previous_tab
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+t new_tab
 map cmd+t new_tab 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -4602,12 +4356,10 @@ map cmd+t new_tab 🍎
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+q close_tab
 map cmd+w close_tab 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -4617,11 +4369,9 @@ map cmd+w close_tab 🍎
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map shift+cmd+w close_os_window 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -4631,11 +4381,9 @@ map shift+cmd+w close_os_window 🍎
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+. move_tab_forward
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -4645,11 +4393,9 @@ map ctrl+shift+. move_tab_forward
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+, move_tab_backward
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -4659,46 +4405,40 @@ map ctrl+shift+, move_tab_backward
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+alt+t set_tab_title
 map shift+cmd+i set_tab_title 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
-You can also create shortcuts to go to specific \fI\%tabs\fP, with
+You can also create shortcuts to go to specific \X'tty: link #term-tab'\fI\%tabs\fP\X'tty: link', with
 \fB1\fP being the first tab, \fB2\fP the second tab and \fB\-1\fP being the
 previously active tab, and any number larger than the last tab being the last
 tab:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+alt+1 goto_tab 1
 map ctrl+alt+2 goto_tab 2
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
-Just as with \fI\%new_window\fP above, you can also pass the name of arbitrary
-commands to run when using \fI\%new_tab\fP and \fI\%new_tab_with_cwd\fP\&. Finally,
+Just as with \X'tty: link #action-new_window'\fI\%new_window\fP\X'tty: link' above, you can also pass the name of arbitrary
+commands to run when using \X'tty: link #action-new_tab'\fI\%new_tab\fP\X'tty: link' and \X'tty: link #action-new_tab_with_cwd'\fI\%new_tab_with_cwd\fP\X'tty: link'\&. Finally,
 if you want the new tab to open next to the current tab rather than at the
 end of the tabs list, use:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+t new_tab !neighbor [optional cmd to run]
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
-.SH LAYOUT MANAGEMENT
+.SS Layout management
 .INDENT 0.0
 .TP
 .B Next layout
@@ -4706,24 +4446,20 @@ map ctrl+t new_tab !neighbor [optional cmd to run]
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+l next_layout
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
-You can also create shortcuts to switch to specific \fI\%layouts\fP:
+You can also create shortcuts to switch to specific \X'tty: link #term-layout'\fI\%layouts\fP\X'tty: link':
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+alt+t goto_layout tall
 map ctrl+alt+s goto_layout stack
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -4731,28 +4467,24 @@ Similarly, to switch back to the previous layout:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+alt+p last_used_layout
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
-There is also a \fI\%toggle_layout\fP action that switches to the named layout or
+There is also a \X'tty: link #action-toggle_layout'\fI\%toggle_layout\fP\X'tty: link' action that switches to the named layout or
 back to the previous layout if in the named layout. Useful to temporarily \(dqzoom\(dq
 the active window by switching to the stack layout:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+alt+z toggle_layout stack
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
-.SH FONT SIZES
+.SS Font sizes
 .sp
 You can change the font size for all top\-level kitty OS windows at a time or
 only the current one.
@@ -4763,16 +4495,14 @@ only the current one.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+equal change_font_size all +2.0
 map ctrl+shift+plus change_font_size all +2.0
 map ctrl+shift+kp_add change_font_size all +2.0
 map cmd+plus change_font_size all +2.0 🍎
 map cmd+equal change_font_size all +2.0 🍎
 map shift+cmd+equal change_font_size all +2.0 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -4782,14 +4512,12 @@ map shift+cmd+equal change_font_size all +2.0 🍎
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+minus change_font_size all \-2.0
 map ctrl+shift+kp_subtract change_font_size all \-2.0
 map cmd+minus change_font_size all \-2.0 🍎
 map shift+cmd+minus change_font_size all \-2.0 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -4799,12 +4527,10 @@ map shift+cmd+minus change_font_size all \-2.0 🍎
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+backspace change_font_size all 0
 map cmd+0 change_font_size all 0 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -4812,11 +4538,9 @@ To setup shortcuts for specific font sizes:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map kitty_mod+f6 change_font_size all 10.0
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -4824,14 +4548,12 @@ To setup shortcuts to change only the current OS window\(aqs font size:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map kitty_mod+f6 change_font_size current 10.0
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
-.SH SELECT AND ACT ON VISIBLE TEXT
+.SS Select and act on visible text
 .sp
 Use the hints kitten to select text and either pass it to an external program or
 insert it into the terminal or copy it to the clipboard.
@@ -4842,11 +4564,9 @@ insert it into the terminal or copy it to the clipboard.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+e open_url_with_hints
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -4859,11 +4579,9 @@ URL is specified in \fI\%open_url_with\fP\&.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+p>f kitten hints \-\-type path \-\-program \-
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -4877,11 +4595,9 @@ command.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+p>shift+f kitten hints \-\-type path
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -4893,11 +4609,9 @@ Select a path/filename and open it with the default open program.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+p>l kitten hints \-\-type line \-\-program \-
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -4910,11 +4624,9 @@ things like: \fBls \-1\fP\&.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+p>w kitten hints \-\-type word \-\-program \-
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -4926,11 +4638,9 @@ Select words and insert into terminal.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+p>h kitten hints \-\-type hash \-\-program \-
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -4943,16 +4653,14 @@ with \fBgit\fP, which uses SHA1 hashes to identify commits.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+p>n kitten hints \-\-type linenum
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 Select something that looks like \fBfilename:linenum\fP and open it in
-\fBvim\fP at the specified line number.
+your default editor at the specified line number.
 .INDENT 0.0
 .TP
 .B Open the selected hyperlink
@@ -4960,20 +4668,18 @@ Select something that looks like \fBfilename:linenum\fP and open it in
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+p>y kitten hints \-\-type hyperlink
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
-Select a \fI\%hyperlink\fP (i.e. a URL that has been marked as such
+Select a \X'tty: link #term-hyperlinks'\fI\%hyperlink\fP\X'tty: link' (i.e. a URL that has been marked as such
 by the terminal program, for example, by \fBls \-\-hyperlink=auto\fP).
 .sp
 The hints kitten has many more modes of operation that you can map to different
 shortcuts. For a full description see \fI\%hints kitten\fP\&.
-.SH MISCELLANEOUS
+.SS Miscellaneous
 .INDENT 0.0
 .TP
 .B Show documentation
@@ -4981,11 +4687,9 @@ shortcuts. For a full description see \fI\%hints kitten\fP\&.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+f1 show_kitty_doc overview
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -4995,12 +4699,10 @@ map ctrl+shift+f1 show_kitty_doc overview
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+f11 toggle_fullscreen
 map ctrl+cmd+f toggle_fullscreen 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -5010,11 +4712,9 @@ map ctrl+cmd+f toggle_fullscreen 🍎
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+f10 toggle_maximized
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -5024,11 +4724,9 @@ map ctrl+shift+f10 toggle_maximized
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map opt+cmd+s toggle_macos_secure_keyboard_entry 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -5038,12 +4736,10 @@ map opt+cmd+s toggle_macos_secure_keyboard_entry 🍎
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+u kitten unicode_input
 map ctrl+cmd+space kitten unicode_input 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -5053,12 +4749,10 @@ map ctrl+cmd+space kitten unicode_input 🍎
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+f2 edit_config_file
 map cmd+, edit_config_file 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -5068,11 +4762,9 @@ map cmd+, edit_config_file 🍎
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+escape kitty_shell window
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -5085,11 +4777,9 @@ Open the kitty shell in a new \fBwindow\fP / \fBtab\fP / \fBoverlay\fP /
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+a>m set_background_opacity +0.1
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -5099,11 +4789,9 @@ map ctrl+shift+a>m set_background_opacity +0.1
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+a>l set_background_opacity \-0.1
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -5113,11 +4801,9 @@ map ctrl+shift+a>l set_background_opacity \-0.1
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+a>1 set_background_opacity 1
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -5127,11 +4813,9 @@ map ctrl+shift+a>1 set_background_opacity 1
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+a>d set_background_opacity default
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -5141,12 +4825,10 @@ map ctrl+shift+a>d set_background_opacity default
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+delete clear_terminal reset active
 map opt+cmd+r clear_terminal reset active 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -5154,8 +4836,7 @@ You can create shortcuts to clear/reset the terminal. For example:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 # Reset the terminal
 map f1 clear_terminal reset active
 # Clear the terminal screen by erasing all contents
@@ -5164,34 +4845,58 @@ map f1 clear_terminal clear active
 map f1 clear_terminal scrollback active
 # Scroll the contents of the screen into the scrollback
 map f1 clear_terminal scroll active
-# Clear everything up to the line with the cursor
+# Clear everything on screen up to the line with the cursor or the start of the current prompt (needs shell integration)
 map f1 clear_terminal to_cursor active
-.ft P
-.fi
+# Same as above except cleared lines are moved into scrollback
+map f1 clear_terminal to_cursor_scroll active
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 If you want to operate on all kitty windows instead of just the current one, use
 all instead of active\&.
 .sp
-It is also possible to remap \fBCtrl+L\fP to both scroll the current screen
-contents into the scrollback buffer and clear the screen, instead of just
-clearing the screen, for example, for ZSH add the following to \fB~/.zshrc\fP:
+Some useful functions that can be defined in the shell rc files to perform various kinds of
+clearing of the current window:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
-scroll\-and\-clear\-screen() {
-    printf \(aq\en%.0s\(aq {1..$LINES}
-    zle clear\-screen
+.EX
+clear\-only\-screen() {
+    printf \(dq\ee[H\ee[2J\(dq
 }
-zle \-N scroll\-and\-clear\-screen
-bindkey \(aq^l\(aq scroll\-and\-clear\-screen
-.ft P
-.fi
+
+clear\-screen\-and\-scrollback() {
+    printf \(dq\ee[H\ee[3J\(dq
+}
+
+clear\-screen\-saving\-contents\-in\-scrollback() {
+    printf \(dq\ee[H\ee[22J\(dq
+}
+.EE
 .UNINDENT
 .UNINDENT
+.sp
+For instance, using these escape codes, it is possible to remap \fBCtrl+L\fP
+to both scroll the current screen contents into the scrollback buffer and clear
+the screen, instead of just clearing the screen. For ZSH, in \fB~/.zshrc\fP, add:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.EX
+ctrl_l() {
+    builtin print \-rn \-\- $\(aq\er\ee[0J\ee[H\ee[22J\(aq >\(dq$TTY\(dq
+    builtin zle .reset\-prompt
+    builtin zle \-R
+}
+zle \-N ctrl_l
+bindkey \(aq^l\(aq ctrl_l
+.EE
+.UNINDENT
+.UNINDENT
+.sp
+Alternatively, you can just add \fBmap ctrl+l clear_terminal to_cursor_scroll active\fP to \fBkitty.conf\fP which
+works with no changes to the shell rc files, but only clears up to the prompt, it does not clear anytext at the prompt itself.
 .INDENT 0.0
 .TP
 .B Clear up to cursor line
@@ -5199,11 +4904,9 @@ bindkey \(aq^l\(aq scroll\-and\-clear\-screen
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map cmd+k clear_terminal to_cursor active 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -5213,12 +4916,10 @@ map cmd+k clear_terminal to_cursor active 🍎
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+f5 load_config_file
 map ctrl+cmd+, load_config_file 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -5230,11 +4931,9 @@ also map a keybinding to load a different config file, for example:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map f5 load_config /path/to/alternative/kitty.conf
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -5247,12 +4946,10 @@ other words the new configuration \fIreplace\fP the old ones.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+shift+f6 debug_config
 map opt+cmd+, debug_config 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -5268,19 +4965,17 @@ when pressing specified shortcut keys. For example:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+alt+a send_text all Special text
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 This will send \(dqSpecial text\(dq when you press the \fBCtrl+Alt+A\fP key
-combination. The text to be sent decodes \fI\%ANSI C escapes\fP
+combination. The text to be sent decodes \X'tty: link https://www.gnu.org/software/bash/manual/html_node/ANSI_002dC-Quoting.html'\fI\%ANSI C escapes\fP\X'tty: link'
 so you can use escapes like \fB\ee\fP to send control codes or \fB\eu21fb\fP to send
 Unicode characters (or you can just input the Unicode characters directly as
-UTF\-8 text). You can use \fBkitty +kitten show_key\fP to get the key escape
+UTF\-8 text). You can use \fBkitten show_key\fP to get the key escape
 codes you want to emulate.
 .sp
 The first argument to \fBsend_text\fP is the keyboard modes in which to
@@ -5294,15 +4989,13 @@ Some more examples:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 # Output a word and move the cursor to the start of the line (like typing and pressing Home)
 map ctrl+alt+a send_text normal Word\ee[H
 map ctrl+alt+a send_text application Word\eeOH
 # Run a command at a shell prompt (like typing the command and pressing Enter)
 map ctrl+alt+a send_text normal,application some command with arguments\er
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -5312,11 +5005,9 @@ map ctrl+alt+a send_text normal,application some command with arguments\er
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map shift+cmd+/ open_url https://sw.kovidgoyal.net/kitty/ 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -5326,11 +5017,9 @@ map shift+cmd+/ open_url https://sw.kovidgoyal.net/kitty/ 🍎
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map cmd+h hide_macos_app 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -5340,11 +5029,9 @@ map cmd+h hide_macos_app 🍎
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map opt+cmd+h hide_macos_other_apps 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -5354,11 +5041,9 @@ map opt+cmd+h hide_macos_other_apps 🍎
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map cmd+m minimize_macos_window 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -5368,13 +5053,12 @@ map cmd+m minimize_macos_window 🍎
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map cmd+q quit 🍎
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
+.SH Sample kitty.conf
 .sp
 You can edit a fully commented sample kitty.conf by pressing the
 \fI\%ctrl+shift+f2\fP shortcut in kitty. This will generate a config file
@@ -5386,23 +5070,23 @@ A default configuration file can also be generated by running:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 kitty +runpy \(aqfrom kitty.config import *; print(commented_out_default_config())\(aq
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 This will print the commented out default config file to \fBSTDOUT\fP\&.
+.SH All mappable actions
 .sp
-See the \fI\%list of all the things you can make kitty can do\fP\&.
-.SH MAPPABLE ACTIONS
+See the \fI\%list of all the things you can make |kitty| can do\fP\&.
+.SS Mappable actions
 .sp
 The actions described below can be mapped to any key press or mouse action
 using the \fBmap\fP and \fBmouse_map\fP directives in \fBkitty.conf\fP\&. For
 configuration examples, see the default shortcut links for each action.
-.SH COPY/PASTE
+To read about keyboard mapping in more detail, see \fI\%Making your keyboard dance\fP\&.
+.SS Copy/paste
 .INDENT 0.0
 .TP
 .B clear_selection
@@ -5435,7 +5119,7 @@ Copy the selected text from the active window to the clipboard, if no selection,
 Copy the selected text from the active window to the clipboard
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+c\fP
+\X'tty: link #shortcut-kitty.Copy-to-clipboard'\fI\%ctrl+shift+c\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B pass_selection_to_program
@@ -5444,7 +5128,7 @@ Default shortcuts using this action:
 Pass the selected text from the active window to the specified program
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+o\fP
+\X'tty: link #shortcut-kitty.Pass-selection-to-program'\fI\%ctrl+shift+o\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B paste
@@ -5458,7 +5142,7 @@ Paste the specified text into the current window. ANSI C escapes are decoded.
 .sp
 Show output from the first shell command on screen in a pager like less
 .sp
-Requires \fI\%Shell integration\fP to work
+Requires \X'tty: link #shell-integration'\fI\%Shell integration\fP\X'tty: link' to work
 .INDENT 0.0
 .TP
 .B show_last_command_output
@@ -5466,10 +5150,10 @@ Requires \fI\%Shell integration\fP to work
 .sp
 Show output from the last shell command in a pager like less
 .sp
-Requires \fI\%Shell integration\fP to work
+Requires \X'tty: link #shell-integration'\fI\%Shell integration\fP\X'tty: link' to work
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+g\fP
+\X'tty: link #shortcut-kitty.Browse-output-of-the-last-shell-command-in-pager'\fI\%ctrl+shift+g\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B show_last_non_empty_command_output
@@ -5477,7 +5161,7 @@ Default shortcuts using this action:
 .sp
 Show the last non\-empty output from a shell command in a pager like less
 .sp
-Requires \fI\%Shell integration\fP to work
+Requires \X'tty: link #shell-integration'\fI\%Shell integration\fP\X'tty: link' to work
 .INDENT 0.0
 .TP
 .B show_last_visited_command_output
@@ -5487,7 +5171,7 @@ Show the first command output below the last scrolled position via scroll_to_pro
 .sp
 or the last mouse clicked command output in a pager like less
 .sp
-Requires \fI\%Shell integration\fP to work
+Requires \X'tty: link #shell-integration'\fI\%Shell integration\fP\X'tty: link' to work
 .INDENT 0.0
 .TP
 .B show_scrollback
@@ -5496,7 +5180,7 @@ Requires \fI\%Shell integration\fP to work
 Show scrollback in a pager like less
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+h\fP
+\X'tty: link #shortcut-kitty.Browse-scrollback-buffer-in-pager'\fI\%ctrl+shift+h\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B copy_to_buffer
@@ -5504,7 +5188,7 @@ Default shortcuts using this action:
 .sp
 Copy the selection from the active window to the specified buffer
 .sp
-See \fI\%Multiple copy/paste buffers\fP for details.
+See \X'tty: link #cpbuf'\fI\%Multiple copy/paste buffers\fP\X'tty: link' for details.
 .INDENT 0.0
 .TP
 .B paste_from_buffer
@@ -5512,7 +5196,7 @@ See \fI\%Multiple copy/paste buffers\fP for details.
 .sp
 Paste from the specified buffer to the active window
 .sp
-See \fI\%Multiple copy/paste buffers\fP for details.
+See \X'tty: link #cpbuf'\fI\%Multiple copy/paste buffers\fP\X'tty: link' for details.
 .INDENT 0.0
 .TP
 .B paste_from_clipboard
@@ -5521,7 +5205,7 @@ See \fI\%Multiple copy/paste buffers\fP for details.
 Paste from the clipboard to the active window
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+v\fP
+\X'tty: link #shortcut-kitty.Paste-from-clipboard'\fI\%ctrl+shift+v\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B paste_from_selection
@@ -5530,8 +5214,8 @@ Default shortcuts using this action:
 Paste from the primary selection, if present, otherwise the clipboard to the active window
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+s\fP
-.SH DEBUGGING
+\X'tty: link #shortcut-kitty.Paste-from-selection'\fI\%ctrl+shift+s\fP\X'tty: link'
+.SS Debugging
 .INDENT 0.0
 .TP
 .B dump_lines_with_attrs
@@ -5545,7 +5229,7 @@ Show a dump of the current lines in the scrollback + screen with their line attr
 .sp
 Close all shared SSH connections
 .sp
-See \fI\%share_connections\fP for details.
+See \X'tty: link #opt-kitten-ssh.share_connections'\fI\%share_connections\fP\X'tty: link' for details.
 .INDENT 0.0
 .TP
 .B debug_config
@@ -5554,14 +5238,14 @@ See \fI\%share_connections\fP for details.
 Show the effective configuration kitty is running with
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+f6\fP
+\X'tty: link #shortcut-kitty.Debug-kitty-configuration'\fI\%ctrl+shift+f6\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B show_kitty_env_vars
 .UNINDENT
 .sp
 Show the environment variables that the kitty process sees
-.SH LAYOUTS
+.SS Layouts
 .INDENT 0.0
 .TP
 .B goto_layout
@@ -5576,12 +5260,10 @@ For example:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map f1 goto_layout tall
 map f2 goto_layout fat:bias=20
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -5604,7 +5286,7 @@ Perform a layout specific action. See \fI\%Arrange windows\fP for details
 Go to the next enabled layout. Can optionally supply an integer to jump by the specified number.
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+l\fP
+\X'tty: link #shortcut-kitty.Next-layout'\fI\%ctrl+shift+l\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B toggle_layout
@@ -5618,14 +5300,12 @@ by switching to the stack layout. For example:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map f1 toggle_layout stack
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
-.SH MARKS
+.SS Marks
 .INDENT 0.0
 .TP
 .B remove_marker
@@ -5650,7 +5330,26 @@ Toggle the current marker on/off
 .UNINDENT
 .sp
 Create a new marker
-.SH MISCELLANEOUS
+.SS Miscellaneous
+.INDENT 0.0
+.TP
+.B send_key
+.UNINDENT
+.sp
+Send the specified keys to the active window.
+.sp
+Note that the key will be sent only if the current keyboard mode of the program running in the terminal supports it.
+Both key press and key release are sent. First presses for all specified keys and then releases in reverse order.
+To send a pattern of press and release for multiple keys use the \fI\%combine\fP action. For example:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.EX
+map f1 send_key ctrl+x alt+y
+map f1 combine : send_key ctrl+x : send_key alt+y
+.EE
+.UNINDENT
+.UNINDENT
 .INDENT 0.0
 .TP
 .B send_text
@@ -5658,10 +5357,10 @@ Create a new marker
 .sp
 Send the specified text to the active window
 .sp
-See \fI\%send_text\fP for details.
+See \X'tty: link #shortcut-kitty.Send-arbitrary-text-on-key-presses'\fI\%send_text\fP\X'tty: link' for details.
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+alt+h\fP
+\X'tty: link #shortcut-kitty.Send-arbitrary-text-on-key-presses'\fI\%ctrl+shift+alt+h\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B show_kitty_doc
@@ -5673,19 +5372,17 @@ For example:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 # show the config docs
 map f1 show_kitty_doc conf
 # show the ssh kitten docs
 map f1 show_kitty_doc kittens/ssh
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+f1\fP
+\X'tty: link #shortcut-kitty.Show-documentation'\fI\%ctrl+shift+f1\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B signal_child
@@ -5697,11 +5394,9 @@ For example:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map f1 signal_child SIGTERM
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -5711,12 +5406,11 @@ map f1 signal_child SIGTERM
 .sp
 Clear the terminal
 .sp
-See \fI\%reset_terminal\fP for details. For example:
+See \X'tty: link #shortcut-kitty.Reset-the-terminal'\fI\%reset_terminal\fP\X'tty: link' for details. For example:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 # Reset the terminal
 map f1 clear_terminal reset active
 # Clear the terminal screen by erasing all contents
@@ -5725,15 +5419,17 @@ map f1 clear_terminal clear active
 map f1 clear_terminal scrollback active
 # Scroll the contents of the screen into the scrollback
 map f1 clear_terminal scroll active
-# Clear everything up to the line with the cursor
+# Clear everything on screen up to the line with the cursor or the start of the current prompt (needs shell integration)
+# Useful for clearing the screen up to the shell prompt and moving the shell prompt to the top of the screen.
 map f1 clear_terminal to_cursor active
-.ft P
-.fi
+# Same as above except cleared lines are moved into scrollback
+map f1 clear_terminal to_cursor_scroll active
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 Default shortcuts using this action:
-\fI\%cmd+k\fP, \fI\%ctrl+shift+delete\fP
+\X'tty: link #shortcut-kitty.Clear-up-to-cursor-line'\fI\%cmd+k\fP\X'tty: link', \X'tty: link #shortcut-kitty.Reset-the-terminal'\fI\%ctrl+shift+delete\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B combine
@@ -5745,11 +5441,9 @@ The syntax is:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map key combine <separator> action1 <separator> action2 <separator> action3 ...
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -5757,11 +5451,10 @@ For example:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map kitty_mod+e combine : new_window : next_layout
-.ft P
-.fi
+map kitty_mod+e combine | new_tab | goto_tab \-1
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -5771,7 +5464,7 @@ map kitty_mod+e combine : new_window : next_layout
 .sp
 Turn on/off ligatures in the specified window
 .sp
-See \fI\%disable_ligatures\fP for details
+See \X'tty: link #opt-kitty.disable_ligatures'\fI\%disable_ligatures\fP\X'tty: link' for details
 .INDENT 0.0
 .TP
 .B discard_event
@@ -5786,7 +5479,7 @@ Discard this event completely ignoring it
 Edit the kitty.conf config file in your favorite text editor
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+f2\fP
+\X'tty: link #shortcut-kitty.Edit-config-file'\fI\%ctrl+shift+f2\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B hide_macos_app
@@ -5795,7 +5488,7 @@ Default shortcuts using this action:
 Hide macOS kitty application
 .sp
 Default shortcuts using this action:
-\fI\%cmd+h\fP
+\X'tty: link #shortcut-kitty.Hide-macOS-kitty-application'\fI\%cmd+h\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B hide_macos_other_apps
@@ -5804,7 +5497,7 @@ Default shortcuts using this action:
 Hide macOS other applications
 .sp
 Default shortcuts using this action:
-\fI\%opt+cmd+h\fP
+\X'tty: link #shortcut-kitty.Hide-macOS-other-applications'\fI\%opt+cmd+h\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B input_unicode_character
@@ -5821,21 +5514,21 @@ Run the specified kitten. See \fI\%Custom kittens\fP for details
 Default shortcuts using this action:
 .INDENT 0.0
 .IP \(bu 2
-\fI\%Hints\fP \- \fI\%ctrl+shift+p>h\fP Insert selected hash
+\fI\%Hints\fP \- \X'tty: link #shortcut-kitty.Insert-selected-hash'\fI\%ctrl+shift+p>h\fP\X'tty: link' Insert selected hash
 .IP \(bu 2
-\fI\%Hints\fP \- \fI\%ctrl+shift+p>l\fP Insert selected line
+\fI\%Hints\fP \- \X'tty: link #shortcut-kitty.Insert-selected-line'\fI\%ctrl+shift+p>l\fP\X'tty: link' Insert selected line
 .IP \(bu 2
-\fI\%Hints\fP \- \fI\%ctrl+shift+p>f\fP Insert selected path
+\fI\%Hints\fP \- \X'tty: link #shortcut-kitty.Insert-selected-path'\fI\%ctrl+shift+p>f\fP\X'tty: link' Insert selected path
 .IP \(bu 2
-\fI\%Hints\fP \- \fI\%ctrl+shift+p>w\fP Insert selected word
+\fI\%Hints\fP \- \X'tty: link #shortcut-kitty.Insert-selected-word'\fI\%ctrl+shift+p>w\fP\X'tty: link' Insert selected word
 .IP \(bu 2
-\fI\%Hints\fP \- \fI\%ctrl+shift+p>shift+f\fP Open selected path
+\fI\%Hints\fP \- \X'tty: link #shortcut-kitty.Open-selected-path'\fI\%ctrl+shift+p>shift+f\fP\X'tty: link' Open selected path
 .IP \(bu 2
-\fI\%Hints\fP \- \fI\%ctrl+shift+p>n\fP Open the selected file at the selected line
+\fI\%Hints\fP \- \X'tty: link #shortcut-kitty.Open-the-selected-file-at-the-selected-line'\fI\%ctrl+shift+p>n\fP\X'tty: link' Open the selected file at the selected line
 .IP \(bu 2
-\fI\%Hints\fP \- \fI\%ctrl+shift+p>y\fP Open the selected hyperlink
+\fI\%Hints\fP \- \X'tty: link #shortcut-kitty.Open-the-selected-hyperlink'\fI\%ctrl+shift+p>y\fP\X'tty: link' Open the selected hyperlink
 .IP \(bu 2
-\fI\%Unicode input\fP \- \fI\%ctrl+shift+u\fP Unicode input
+\fI\%Unicode input\fP \- \X'tty: link #shortcut-kitty.Unicode-input'\fI\%ctrl+shift+u\fP\X'tty: link' Unicode input
 .UNINDENT
 .INDENT 0.0
 .TP
@@ -5845,7 +5538,7 @@ Default shortcuts using this action:
 Run the kitty shell to control kitty with commands
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+escape\fP
+\X'tty: link #shortcut-kitty.Open-the-kitty-command-shell'\fI\%ctrl+shift+escape\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B launch
@@ -5867,16 +5560,14 @@ config options. For example:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map f5 load_config_file /path/to/some/kitty.conf
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+f5\fP
+\X'tty: link #shortcut-kitty.Reload-kitty.conf'\fI\%ctrl+shift+f5\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B minimize_macos_window
@@ -5885,7 +5576,7 @@ Default shortcuts using this action:
 Minimize macOS window
 .sp
 Default shortcuts using this action:
-\fI\%cmd+m\fP
+\X'tty: link #shortcut-kitty.Minimize-macOS-window'\fI\%cmd+m\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B open_url
@@ -5894,7 +5585,7 @@ Default shortcuts using this action:
 Open the specified URL
 .sp
 Default shortcuts using this action:
-\fI\%shift+cmd+/\fP
+\X'tty: link #shortcut-kitty.Open-kitty-Website'\fI\%shift+cmd+/\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B open_url_with_hints
@@ -5903,27 +5594,55 @@ Default shortcuts using this action:
 Click a URL using the keyboard
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+e\fP
+\X'tty: link #shortcut-kitty.Open-URL'\fI\%ctrl+shift+e\fP\X'tty: link'
+.INDENT 0.0
+.TP
+.B pop_keyboard_mode
+.UNINDENT
+.sp
+End the current keyboard mode switching to the previous mode.
+.INDENT 0.0
+.TP
+.B push_keyboard_mode
+.UNINDENT
+.sp
+Switch to the specified keyboard mode, pushing it onto the stack of keyboard modes.
 .INDENT 0.0
 .TP
 .B remote_control
 .UNINDENT
 .sp
-Run a remote control command
+Run a remote control command without needing to allow remote control
 .sp
 For example:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map f1 remote_control set\-spacing margin=30
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
-See \fI\%Mapping key presses to remote control commands\fP for details.
+See \X'tty: link #rc-mapping'\fI\%Mapping key presses to remote control commands\fP\X'tty: link' for details.
+.INDENT 0.0
+.TP
+.B remote_control_script
+.UNINDENT
+.sp
+Run a remote control script without needing to allow remote control
+.sp
+For example:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.EX
+map f1 remote_control_script /path/to/script arg1 arg2 ...
+.EE
+.UNINDENT
+.UNINDENT
+.sp
+See \X'tty: link #rc-mapping'\fI\%Mapping key presses to remote control commands\fP\X'tty: link' for details.
 .INDENT 0.0
 .TP
 .B set_colors
@@ -5931,17 +5650,21 @@ See \fI\%Mapping key presses to remote control commands\fP for details.
 .sp
 Change colors in the specified windows
 .sp
-For details, see \fI\%kitty @ set\-colors\fP\&. For example:
+For details, see \X'tty: link #at-set-colors'\fI\%kitten @ set\-colors\fP\X'tty: link'\&. For example:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map f5 set_colors \-\-configured /path/to/some/config/file/colors.conf
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
+.INDENT 0.0
+.TP
+.B show_error
+.UNINDENT
+.sp
+Show an error message with the specified title and text
 .INDENT 0.0
 .TP
 .B sleep
@@ -5956,7 +5679,7 @@ Sleep for the specified time period. Suffix can be s for seconds, m, for minutes
 Toggle macOS secure keyboard entry
 .sp
 Default shortcuts using this action:
-\fI\%opt+cmd+s\fP
+\X'tty: link #shortcut-kitty.Toggle-macOS-secure-keyboard-entry'\fI\%opt+cmd+s\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B no_op
@@ -5965,7 +5688,7 @@ Default shortcuts using this action:
 Unbind a shortcut
 .sp
 Mapping a shortcut to no_op causes kitty to not intercept the key stroke anymore, instead passing it to the program running inside it.
-.SH MOUSE ACTIONS
+.SS Mouse actions
 .INDENT 0.0
 .TP
 .B mouse_click_url
@@ -5990,17 +5713,15 @@ Supported actions are:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 selection \- check for a selection and if one exists abort processing
 link \- if a link exists under the mouse, click it
 prompt \- if the mouse click happens at a shell prompt move the cursor to the mouse location
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
-For examples, see \fI\%Mouse actions\fP
+For examples, see \X'tty: link #conf-kitty-mouse-mousemap'\fI\%Mouse actions\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B mouse_select_command_output
@@ -6008,7 +5729,7 @@ For examples, see \fI\%Mouse actions\fP
 .sp
 Select clicked command output
 .sp
-Requires \fI\%Shell integration\fP to work
+Requires \X'tty: link #shell-integration'\fI\%Shell integration\fP\X'tty: link' to work
 .INDENT 0.0
 .TP
 .B mouse_selection
@@ -6016,7 +5737,7 @@ Requires \fI\%Shell integration\fP to work
 .sp
 Manipulate the selection based on the current mouse position
 .sp
-For examples, see \fI\%Mouse actions\fP
+For examples, see \X'tty: link #conf-kitty-mouse-mousemap'\fI\%Mouse actions\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B mouse_show_command_output
@@ -6024,7 +5745,7 @@ For examples, see \fI\%Mouse actions\fP
 .sp
 Show clicked command output in a pager like less
 .sp
-Requires \fI\%Shell integration\fP to work
+Requires \X'tty: link #shell-integration'\fI\%Shell integration\fP\X'tty: link' to work
 .INDENT 0.0
 .TP
 .B paste_selection
@@ -6037,7 +5758,7 @@ Paste the current primary selection
 .UNINDENT
 .sp
 Paste the current primary selection or the clipboard if no selection is present
-.SH SCROLLING
+.SS Scrolling
 .INDENT 0.0
 .TP
 .B scroll_end
@@ -6046,7 +5767,7 @@ Paste the current primary selection or the clipboard if no selection is present
 Scroll to the bottom of the scrollback buffer when in main screen
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+end\fP
+\X'tty: link #shortcut-kitty.Scroll-to-bottom'\fI\%ctrl+shift+end\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B scroll_home
@@ -6055,43 +5776,43 @@ Default shortcuts using this action:
 Scroll to the top of the scrollback buffer when in main screen
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+home\fP
+\X'tty: link #shortcut-kitty.Scroll-to-top'\fI\%ctrl+shift+home\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B scroll_line_down
 .UNINDENT
 .sp
-Scroll down by one line when in main screen
+Scroll down by one line when in main screen. To scroll by different amounts, you can map the remote_control scroll\-window action.
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+down\fP
+\X'tty: link #shortcut-kitty.Scroll-line-down'\fI\%ctrl+shift+down\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B scroll_line_up
 .UNINDENT
 .sp
-Scroll up by one line when in main screen
+Scroll up by one line when in main screen. To scroll by different amounts, you can map the remote_control scroll\-window action.
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+up\fP
+\X'tty: link #shortcut-kitty.Scroll-line-up'\fI\%ctrl+shift+up\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B scroll_page_down
 .UNINDENT
 .sp
-Scroll down by one page when in main screen
+Scroll down by one page when in main screen. To scroll by different amounts, you can map the remote_control scroll\-window action.
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+page_down\fP
+\X'tty: link #shortcut-kitty.Scroll-page-down'\fI\%ctrl+shift+page_down\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B scroll_page_up
 .UNINDENT
 .sp
-Scroll up by one page when in main screen
+Scroll up by one page when in main screen. To scroll by different amounts, you can map the remote_control scroll\-window action.
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+page_up\fP
+\X'tty: link #shortcut-kitty.Scroll-page-up'\fI\%ctrl+shift+page_up\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B scroll_prompt_to_bottom
@@ -6103,7 +5824,7 @@ Scroll prompt to the bottom of the screen, filling in extra lines from the scrol
 .B scroll_prompt_to_top
 .UNINDENT
 .sp
-Scroll prompt to the top of the screen, filling screen with empty lines, when in main screen
+Scroll prompt to the top of the screen, filling screen with empty lines, when in main screen. To avoid putting the lines above the prompt into the scrollback use scroll_prompt_to_top y
 .INDENT 0.0
 .TP
 .B scroll_to_prompt
@@ -6112,26 +5833,24 @@ Scroll prompt to the top of the screen, filling screen with empty lines, when in
 Scroll to the previous/next shell command prompt
 .sp
 Allows easy jumping from one command to the next. Requires working
-\fI\%Shell integration\fP\&. Takes a single, optional, number as argument which is
+\X'tty: link #shell-integration'\fI\%Shell integration\fP\X'tty: link'\&. Takes a single, optional, number as argument which is
 the number of prompts to jump, negative values jump up and positive values jump down.
 A value of zero will jump to the last prompt visited by this action.
 For example:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+p scroll_to_prompt \-1  # jump to previous
 map ctrl+n scroll_to_prompt 1   # jump to next
 map ctrl+o scroll_to_prompt 0   # jump to last visited
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+x\fP, \fI\%ctrl+shift+z\fP
-.SH TAB MANAGEMENT
+\X'tty: link #shortcut-kitty.Scroll-to-next-shell-prompt'\fI\%ctrl+shift+x\fP\X'tty: link', \X'tty: link #shortcut-kitty.Scroll-to-previous-shell-prompt'\fI\%ctrl+shift+z\fP\X'tty: link'
+.SS Tab management
 .INDENT 0.0
 .TP
 .B close_other_tabs_in_os_window
@@ -6146,7 +5865,7 @@ Close all the tabs in the current OS window other than the currently active tab
 Close the current tab
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+q\fP
+\X'tty: link #shortcut-kitty.Close-tab'\fI\%ctrl+shift+q\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B detach_tab
@@ -6154,7 +5873,7 @@ Default shortcuts using this action:
 .sp
 Detach a tab, moving it to another OS Window
 .sp
-See \fI\%detaching windows\fP for details.
+See \X'tty: link #detach-window'\fI\%detaching windows\fP\X'tty: link' for details.
 .INDENT 0.0
 .TP
 .B goto_tab
@@ -6162,7 +5881,9 @@ See \fI\%detaching windows\fP for details.
 .sp
 Go to the specified tab, by number, starting with 1
 .sp
-Zero and negative numbers go to previously active tabs
+Zero and negative numbers go to previously active tabs.
+Use the \fI\%select_tab\fP action to interactively select a tab
+to go to.
 .INDENT 0.0
 .TP
 .B move_tab_backward
@@ -6171,7 +5892,7 @@ Zero and negative numbers go to previously active tabs
 Move the active tab backward
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+,\fP
+\X'tty: link #shortcut-kitty.Move-tab-backward'\fI\%ctrl+shift+,\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B move_tab_forward
@@ -6180,7 +5901,7 @@ Default shortcuts using this action:
 Move the active tab forward
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+.\fP
+\X'tty: link #shortcut-kitty.Move-tab-forward'\fI\%ctrl+shift+.\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B new_tab
@@ -6189,7 +5910,7 @@ Default shortcuts using this action:
 Create a new tab
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+t\fP
+\X'tty: link #shortcut-kitty.New-tab'\fI\%ctrl+shift+t\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B new_tab_with_cwd
@@ -6204,7 +5925,7 @@ Create a new tab with working directory for the window in it set to the same as 
 Make the next tab active
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+right\fP
+\X'tty: link #shortcut-kitty.Next-tab'\fI\%ctrl+shift+right\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B previous_tab
@@ -6213,7 +5934,7 @@ Default shortcuts using this action:
 Make the previous tab active
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+left\fP
+\X'tty: link #shortcut-kitty.Previous-tab'\fI\%ctrl+shift+left\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B select_tab
@@ -6228,26 +5949,52 @@ Interactively select a tab to switch to
 Change the title of the active tab interactively, by typing in the new title.
 .sp
 If you specify an argument to this action then that is used as the title instead of asking for it.
-Use the empty string (\(dq\(dq) to reset the title to default. For example:
+Use the empty string (\(dq\(dq) to reset the title to default. Use a space (\(dq \(dq) to indicate that the
+prompt should not be pre\-filled. For example:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 # interactive usage
 map f1 set_tab_title
 # set a specific title
 map f2 set_tab_title some title
 # reset to default
 map f3 set_tab_title \(dq\(dq
-.ft P
-.fi
+# interactive usage without prefilled prompt
+map f3 set_tab_title \(dq \(dq
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+alt+t\fP
-.SH WINDOW MANAGEMENT
+\X'tty: link #shortcut-kitty.Set-tab-title'\fI\%ctrl+shift+alt+t\fP\X'tty: link'
+.SS Window management
+.INDENT 0.0
+.TP
+.B set_window_title
+.UNINDENT
+.sp
+Change the title of the active window interactively, by typing in the new title.
+.sp
+If you specify an argument to this action then that is used as the title instead of asking for it.
+Use the empty string (\(dq\(dq) to reset the title to default. Use a space (\(dq \(dq) to indicate that the
+prompt should not be pre\-filled. For example:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.EX
+# interactive usage
+map f1 set_window_title
+# set a specific title
+map f2 set_window_title some title
+# reset to default
+map f3 set_window_title \(dq\(dq
+# interactive usage without prefilled prompt
+map f3 set_window_title \(dq \(dq
+.EE
+.UNINDENT
+.UNINDENT
 .INDENT 0.0
 .TP
 .B close_other_windows_in_tab
@@ -6262,7 +6009,7 @@ Close all windows in the tab other than the currently active window
 Focus the eighth window
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+8\fP
+\X'tty: link #shortcut-kitty.Eighth-window'\fI\%ctrl+shift+8\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B fifth_window
@@ -6271,7 +6018,7 @@ Default shortcuts using this action:
 Focus the fifth window
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+5\fP
+\X'tty: link #shortcut-kitty.Fifth-window'\fI\%ctrl+shift+5\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B first_window
@@ -6280,7 +6027,7 @@ Default shortcuts using this action:
 Focus the first window
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+1\fP
+\X'tty: link #shortcut-kitty.First-window'\fI\%ctrl+shift+1\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B focus_visible_window
@@ -6288,10 +6035,10 @@ Default shortcuts using this action:
 .sp
 Focus a visible window by pressing the number of the window. Window numbers are displayed
 .sp
-over the windows for easy selection in this mode. See \fI\%visual_window_select_characters\fP\&.
+over the windows for easy selection in this mode. See \X'tty: link #opt-kitty.visual_window_select_characters'\fI\%visual_window_select_characters\fP\X'tty: link'\&.
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+f7\fP
+\X'tty: link #shortcut-kitty.Visually-select-and-focus-window'\fI\%ctrl+shift+f7\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B fourth_window
@@ -6300,7 +6047,7 @@ Default shortcuts using this action:
 Focus the fourth window
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+4\fP
+\X'tty: link #shortcut-kitty.Fourth-window'\fI\%ctrl+shift+4\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B move_window
@@ -6312,12 +6059,10 @@ For example:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+left move_window left
 map ctrl+down move_window bottom
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -6328,7 +6073,7 @@ map ctrl+down move_window bottom
 Move active window backward (swap it with the previous window)
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+b\fP
+\X'tty: link #shortcut-kitty.Move-window-backward'\fI\%ctrl+shift+b\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B move_window_forward
@@ -6337,7 +6082,7 @@ Default shortcuts using this action:
 Move active window forward (swap it with the next window)
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+f\fP
+\X'tty: link #shortcut-kitty.Move-window-forward'\fI\%ctrl+shift+f\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B move_window_to_top
@@ -6346,7 +6091,7 @@ Default shortcuts using this action:
 Move active window to the top (make it the first window)
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+\(ga\fP
+\X'tty: link #shortcut-kitty.Move-window-to-top'\fI\%ctrl+shift+\(ga\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B neighboring_window
@@ -6358,12 +6103,10 @@ For example:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map ctrl+left neighboring_window left
 map ctrl+down neighboring_window bottom
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -6374,7 +6117,7 @@ map ctrl+down neighboring_window bottom
 Focus the next window in the current tab
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+]\fP
+\X'tty: link #shortcut-kitty.Next-window'\fI\%ctrl+shift+]\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B ninth_window
@@ -6383,7 +6126,7 @@ Default shortcuts using this action:
 Focus the ninth window
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+9\fP
+\X'tty: link #shortcut-kitty.Ninth-window'\fI\%ctrl+shift+9\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B nth_window
@@ -6395,14 +6138,12 @@ than the number of windows focus the last window. For example:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 # focus the previously active window
 map ctrl+p nth_window \-1
 # focus the first window
 map ctrl+1 nth_window 0
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -6413,7 +6154,7 @@ map ctrl+1 nth_window 0
 Focus the previous window in the current tab
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+[\fP
+\X'tty: link #shortcut-kitty.Previous-window'\fI\%ctrl+shift+[\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B reset_window_sizes
@@ -6427,7 +6168,7 @@ Reset window sizes undoing any dynamic resizing of windows
 .sp
 Resize the active window by the specified amount
 .sp
-See \fI\%Resizing windows\fP for details.
+See \X'tty: link #window-resizing'\fI\%Resizing windows\fP\X'tty: link' for details.
 .INDENT 0.0
 .TP
 .B second_window
@@ -6436,7 +6177,7 @@ See \fI\%Resizing windows\fP for details.
 Focus the second window
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+2\fP
+\X'tty: link #shortcut-kitty.Second-window'\fI\%ctrl+shift+2\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B seventh_window
@@ -6445,7 +6186,7 @@ Default shortcuts using this action:
 Focus the seventh window
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+7\fP
+\X'tty: link #shortcut-kitty.Seventh-window'\fI\%ctrl+shift+7\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B sixth_window
@@ -6454,16 +6195,16 @@ Default shortcuts using this action:
 Focus the sixth window
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+6\fP
+\X'tty: link #shortcut-kitty.Sixth-window'\fI\%ctrl+shift+6\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B swap_with_window
 .UNINDENT
 .sp
-Swap the current window with another window in the current tab, selected visually. See \fI\%visual_window_select_characters\fP
+Swap the current window with another window in the current tab, selected visually. See \X'tty: link #opt-kitty.visual_window_select_characters'\fI\%visual_window_select_characters\fP\X'tty: link'
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+f8\fP
+\X'tty: link #shortcut-kitty.Visually-swap-window-with-another'\fI\%ctrl+shift+f8\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B tenth_window
@@ -6472,7 +6213,7 @@ Default shortcuts using this action:
 Focus the tenth window
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+0\fP
+\X'tty: link #shortcut-kitty.Tenth-window'\fI\%ctrl+shift+0\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B third_window
@@ -6481,7 +6222,7 @@ Default shortcuts using this action:
 Focus the third window
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+3\fP
+\X'tty: link #shortcut-kitty.Third-window'\fI\%ctrl+shift+3\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B change_font_size
@@ -6489,10 +6230,10 @@ Default shortcuts using this action:
 .sp
 Change the font size for the current or all OS Windows
 .sp
-See \fI\%Font sizes\fP for details.
+See \X'tty: link #conf-kitty-shortcuts-fonts'\fI\%Font sizes\fP\X'tty: link' for details.
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+minus\fP, \fI\%ctrl+shift+equal\fP, \fI\%ctrl+shift+backspace\fP
+\X'tty: link #shortcut-kitty.Decrease-font-size'\fI\%ctrl+shift+minus\fP\X'tty: link', \X'tty: link #shortcut-kitty.Increase-font-size'\fI\%ctrl+shift+equal\fP\X'tty: link', \X'tty: link #shortcut-kitty.Reset-font-size'\fI\%ctrl+shift+backspace\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B close_os_window
@@ -6501,7 +6242,13 @@ Default shortcuts using this action:
 Close the currently active OS Window
 .sp
 Default shortcuts using this action:
-\fI\%shift+cmd+w\fP
+\X'tty: link #shortcut-kitty.Close-OS-window'\fI\%shift+cmd+w\fP\X'tty: link'
+.INDENT 0.0
+.TP
+.B close_other_os_windows
+.UNINDENT
+.sp
+Close all other OS Windows other than the OS Window containing the currently active window
 .INDENT 0.0
 .TP
 .B close_window
@@ -6510,7 +6257,7 @@ Default shortcuts using this action:
 Close the currently active window
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+w\fP
+\X'tty: link #shortcut-kitty.Close-window'\fI\%ctrl+shift+w\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B close_window_with_confirmation
@@ -6520,15 +6267,13 @@ Close window with confirmation
 .sp
 Asks for confirmation before closing the window. If you don\(aqt want the
 confirmation when the window is sitting at a shell prompt
-(requires \fI\%Shell integration\fP), use:
+(requires \X'tty: link #shell-integration'\fI\%Shell integration\fP\X'tty: link'), use:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map f1 close_window_with_confirmation ignore\-shell
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -6538,7 +6283,7 @@ map f1 close_window_with_confirmation ignore\-shell
 .sp
 Detach a window, moving it to another tab or OS Window
 .sp
-See \fI\%detaching windows\fP for details.
+See \X'tty: link #detach-window'\fI\%detaching windows\fP\X'tty: link' for details.
 .INDENT 0.0
 .TP
 .B new_os_window
@@ -6547,7 +6292,7 @@ See \fI\%detaching windows\fP for details.
 New OS Window
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+n\fP
+\X'tty: link #shortcut-kitty.New-OS-window'\fI\%ctrl+shift+n\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B new_os_window_with_cwd
@@ -6562,7 +6307,7 @@ New OS Window with the same working directory as the currently active window
 Create a new window
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+enter\fP
+\X'tty: link #shortcut-kitty.New-window'\fI\%ctrl+shift+enter\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B new_window_with_cwd
@@ -6574,7 +6319,26 @@ Create a new window with working directory same as that of the active window
 .B nth_os_window
 .UNINDENT
 .sp
-Focus the nth OS window
+Focus the nth OS window if positive or the previously active OS windows if negative. When the number is larger
+.sp
+than the number of OS windows focus the last OS window. A value of zero will refocus the currently focused OS window,
+this is useful if focus is not on any kitty OS window at all, however, it will only work if the window manager
+allows applications to grab focus. For example:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.EX
+# focus the previously active kitty OS window
+map ctrl+p nth_os_window \-1
+# focus the current kitty OS window (grab focus)
+map ctrl+0 nth_os_window 0
+# focus the first kitty OS window
+map ctrl+1 nth_os_window 1
+# focus the last kitty OS window
+map ctrl+1 nth_os_window 999
+.EE
+.UNINDENT
+.UNINDENT
 .INDENT 0.0
 .TP
 .B quit
@@ -6583,7 +6347,7 @@ Focus the nth OS window
 Quit, closing all windows
 .sp
 Default shortcuts using this action:
-\fI\%cmd+q\fP
+\X'tty: link #shortcut-kitty.Quit-kitty'\fI\%cmd+q\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B set_background_opacity
@@ -6595,18 +6359,16 @@ For example:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 map f1 set_background_opacity +0.1
 map f2 set_background_opacity \-0.1
 map f3 set_background_opacity 0.5
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+a>l\fP, \fI\%ctrl+shift+a>1\fP, \fI\%ctrl+shift+a>m\fP, \fI\%ctrl+shift+a>d\fP
+\X'tty: link #shortcut-kitty.Decrease-background-opacity'\fI\%ctrl+shift+a>l\fP\X'tty: link', \X'tty: link #shortcut-kitty.Make-background-fully-opaque'\fI\%ctrl+shift+a>1\fP\X'tty: link', \X'tty: link #shortcut-kitty.Increase-background-opacity'\fI\%ctrl+shift+a>m\fP\X'tty: link', \X'tty: link #shortcut-kitty.Reset-background-opacity'\fI\%ctrl+shift+a>d\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B start_resizing_window
@@ -6614,10 +6376,10 @@ Default shortcuts using this action:
 .sp
 Resize the active window interactively
 .sp
-See \fI\%Resizing windows\fP for details.
+See \X'tty: link #window-resizing'\fI\%Resizing windows\fP\X'tty: link' for details.
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+r\fP
+\X'tty: link #shortcut-kitty.Start-resizing-window'\fI\%ctrl+shift+r\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B toggle_fullscreen
@@ -6626,7 +6388,7 @@ Default shortcuts using this action:
 Toggle the fullscreen status of the active OS Window
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+f11\fP
+\X'tty: link #shortcut-kitty.Toggle-fullscreen'\fI\%ctrl+shift+f11\fP\X'tty: link'
 .INDENT 0.0
 .TP
 .B toggle_maximized
@@ -6635,10 +6397,32 @@ Default shortcuts using this action:
 Toggle the maximized status of the active OS Window
 .sp
 Default shortcuts using this action:
-\fI\%ctrl+shift+f10\fP
-.SH AUTHOR
+\X'tty: link #shortcut-kitty.Toggle-maximized'\fI\%ctrl+shift+f10\fP\X'tty: link'
+.INDENT 0.0
+.TP
+.B toggle_tab
+.UNINDENT
+.sp
+Toggle to the tab matching the specified expression
+.sp
+Switches to the matching tab if another tab is current, otherwise
+switches to the last used tab. Useful to easily switch to and back from a
+tab using a single shortcut. Note that toggling works only between
+tabs in the same OS window. See \X'tty: link #search-syntax'\fI\%Matching windows and tabs\fP\X'tty: link' for details
+on the match expression. For example:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.EX
+map f1 toggle_tab title:mytab
+.EE
+.UNINDENT
+.UNINDENT
+.SH Author
+
 Kovid Goyal
-.SH COPYRIGHT
-2023, Kovid Goyal
+.SH Copyright
+
+2024, Kovid Goyal
 .\" Generated by docutils manpage writer.
 .

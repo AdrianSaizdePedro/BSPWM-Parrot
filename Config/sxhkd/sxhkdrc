@@ -141,10 +141,4 @@ super + shift + b
 ###############
 
 @Print
-        screenshot select
-
-@Print + ctrl
-        screenshot
-
-@Print + alt
-        screenshot window
+    flameshot gui
